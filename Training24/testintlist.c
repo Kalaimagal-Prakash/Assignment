@@ -12,8 +12,10 @@
 //Test program
 int main() {
    LinkList list;
+
    //Create an empty linked list
    Create(&list);
+
    //Add elements to the end of the list
    Add(&list, 10);
    Add(&list, 20);
