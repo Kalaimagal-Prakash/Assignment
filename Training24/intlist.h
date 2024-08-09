@@ -18,7 +18,7 @@
 // h)	Get – gets the element at a particular index.
 // ------------------------------------------------------------------------------------------------
 // intlist.h
-// Program on main branch.
+// Program on Linked List Header File.
 // ------------------------------------------------------------------------------------------------
 
 #ifndef INTLIST_H
