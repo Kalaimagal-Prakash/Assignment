@@ -3,7 +3,7 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------------------------------------
 // intlist.c
-// Program on Linked List Functions.
+// Program on main branch.
 // ------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
@@ -21,6 +21,7 @@ void Create(LinkList* list) {
 void DeleteList(LinkList* list) {
    struct Node* current = list->head;
    struct Node* nextNode;
+
    while (current != NULL) {
       nextNode = current->link;
       free(current);
@@ -35,12 +36,15 @@ void DeleteList(LinkList* list) {
 void Add(LinkList* list, int value) {
    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
    struct Node* lastNode = list->head;
+
    if (newNode == NULL) {
       printf("Memory allocation failed.\n");
       return;
    }
+
    newNode->data = value;
    newNode->link = NULL;
+
    if (list->head == NULL) {
       list->head = newNode;
    }
@@ -59,9 +63,12 @@ void Insert(LinkList* list, int index, int value) {
       printf("Index are out of bounds\n");
       return;
    }
+
    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
    struct Node* currentNode = list->head;
+
    newNode->data = value;
+
    if (index == 0) {
       newNode->link = list->head;
       list->head = newNode;
@@ -82,8 +89,10 @@ void RemoveAt(LinkList* list, int index) {
       printf("Index are out of bounds\n");
       return;
    }
+
    struct Node* currentNode = list->head;
    struct Node* previousNode = NULL;
+
    if (index == 0) {
       list->head = currentNode->link;
       free(currentNode);
@@ -103,21 +112,25 @@ void RemoveAt(LinkList* list, int index) {
 void Remove(LinkList* list, int value) {
    struct Node* currentNode = list->head;
    struct Node* previousNode = NULL;
+
    // Traverse the list to find the node with the specified value
    while (currentNode != NULL && currentNode->data != value) {
       previousNode = currentNode;
       currentNode = currentNode->link;
    }
+
    if (currentNode == NULL) {
       printf("Element %d not found in the list.\n", value);
       return;
    }
+
    if (previousNode == NULL) {
       list->head = currentNode->link;
    }
    else {
       previousNode->link = currentNode->link;
    }
+
    free(currentNode);
    list->size--;
 }
@@ -133,6 +146,7 @@ int Get(const LinkList* list, int index) {
       printf("Index out of bounds.\n");
       return -1;
    }
+
    struct Node* currentNode = list->head;
    for (int i = 0; i < index; i++) {
       currentNode = currentNode->link;

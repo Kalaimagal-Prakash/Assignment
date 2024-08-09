@@ -3,7 +3,7 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------
 // testintlist.c
-// Program on Testing Linked List Functions.
+// Program on main branch.
 // ------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
