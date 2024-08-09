@@ -20,7 +20,6 @@
 // intlist.h
 // Program on Linked List Header File.
 // ------------------------------------------------------------------------------------------------
-
 #ifndef INTLIST_H
 #define INTLIST_H
 
