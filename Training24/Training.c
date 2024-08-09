@@ -8,5 +8,5 @@
 
 #include <stdio.h>
 int main() {
-   prinf("A2 : Hello World");
+   prinf("Hello World");
 }
