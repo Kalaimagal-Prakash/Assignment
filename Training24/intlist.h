@@ -36,14 +36,14 @@ typedef struct LinkList {
 }LinkList;
 
 //Function operations
-void Create(LinkList* list);
-void DeleteList(LinkList* list);
-void Add(LinkList* list, int value);
-void Insert(LinkList* list, int index, int value);
-void RemoveAt(LinkList* list, int index);
-void Remove(LinkList* list, int value);
-int Count(LinkList* list);
-int Get(const LinkList* list, int index);
-void PrintList(LinkList* list);
+void Create (LinkList* list);
+void DeleteList (LinkList* list);
+void Add (LinkList* list, int value);
+void Insert (LinkList* list, int index, int value);
+void RemoveAt (LinkList* list, int index);
+void Remove (LinkList* list, int value);
+int Count (LinkList* list);
+int Get (const LinkList* list, int index);
+void PrintList (LinkList* list);
 
 #endif INTLIST_H

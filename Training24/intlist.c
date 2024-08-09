@@ -11,32 +11,32 @@
 #include "intlist.h"
 
 //Create an empty linked list
-void Create(LinkList* list) {
+void Create (LinkList* list) {
    list->head = NULL;
    list->size = 0;
-   printf("An Empty List is Created.\n");
+   printf ("An Empty List is Created.\n");
 }
 
 //Delete the linked list and all elements
-void DeleteList(LinkList* list) {
+void DeleteList (LinkList* list) {
    struct Node* current = list->head;
    struct Node* nextNode;
    while (current != NULL) {
       nextNode = current->link;
-      free(current);
+      free (current);
       current = nextNode;
    }
    list->head = NULL;
    list->size = 0;
-   printf("The list has been deleted.\n");
+   printf ("The list has been deleted.\n");
 }
 
 //Add an element to the end of the list.
-void Add(LinkList* list, int value) {
-   struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+void Add (LinkList* list, int value) {
+   struct Node* newNode = (struct Node*)malloc (sizeof (struct Node));
    struct Node* lastNode = list->head;
    if (newNode == NULL) {
-      printf("Memory allocation failed.\n");
+      printf ("Memory allocation failed.\n");
       return;
    }
    newNode->data = value;
@@ -54,12 +54,12 @@ void Add(LinkList* list, int value) {
 }
 
 //Insert an element at a specific index
-void Insert(LinkList* list, int index, int value) {
+void Insert (LinkList* list, int index, int value) {
    if (index < 0 || index > list->size) {
-      printf("Index are out of bounds\n");
+      printf ("Index are out of bounds\n");
       return;
    }
-   struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+   struct Node* newNode = (struct Node*)malloc (sizeof (struct Node));
    struct Node* currentNode = list->head;
    newNode->data = value;
    if (index == 0) {
@@ -77,16 +77,16 @@ void Insert(LinkList* list, int index, int value) {
 }
 
 //Remove an element at a specific index
-void RemoveAt(LinkList* list, int index) {
+void RemoveAt (LinkList* list, int index) {
    if (index < 0 || index > list->size) {
-      printf("Index are out of bounds\n");
+      printf ("Index are out of bounds\n");
       return;
    }
    struct Node* currentNode = list->head;
    struct Node* previousNode = NULL;
    if (index == 0) {
       list->head = currentNode->link;
-      free(currentNode);
+      free (currentNode);
    }
    else {
       for (int i = 0; i < index; i++) {
@@ -94,13 +94,13 @@ void RemoveAt(LinkList* list, int index) {
          currentNode = currentNode->link;
       }
       previousNode->link = currentNode->link;
-      free(currentNode);
+      free (currentNode);
    }
    list->size--;
 }
 
 // Remove the first occurrence of a node with specific value
-void Remove(LinkList* list, int value) {
+void Remove (LinkList* list, int value) {
    struct Node* currentNode = list->head;
    struct Node* previousNode = NULL;
    // Traverse the list to find the node with the specified value
@@ -109,7 +109,7 @@ void Remove(LinkList* list, int value) {
       currentNode = currentNode->link;
    }
    if (currentNode == NULL) {
-      printf("Element %d not found in the list.\n", value);
+      printf ("Element %d not found in the list.\n", value);
       return;
    }
    if (previousNode == NULL) {
@@ -118,19 +118,19 @@ void Remove(LinkList* list, int value) {
    else {
       previousNode->link = currentNode->link;
    }
-   free(currentNode);
+   free (currentNode);
    list->size--;
 }
 
 //Return the number of elements in the list
-int Count(LinkList* list) {
+int Count (LinkList* list) {
    return list->size;
 }
 
 //Get the element at a specific index
-int Get(const LinkList* list, int index) {
+int Get (const LinkList* list, int index) {
    if (index < 0 || index >= list->size) {
-      printf("Index out of bounds.\n");
+      printf ("Index out of bounds.\n");
       return -1;
    }
    struct Node* currentNode = list->head;
@@ -141,11 +141,11 @@ int Get(const LinkList* list, int index) {
 }
 
 //Print all element of the list
-void PrintList(LinkList* list) {
+void PrintList (LinkList* list) {
    struct Node* currentNode = list->head;
    while (currentNode != NULL) {
-      printf("%d->", currentNode->data);
+      printf ("%d->", currentNode->data);
       currentNode = currentNode->link;
    }
-   printf("Null\n");
+   printf ("Null\n");
 }
