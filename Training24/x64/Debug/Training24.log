@@ -1,6 +1,0 @@
-﻿  hello.c
-  intlist.c
-  testintlist.c
-  Generating Code...
-testintlist.obj : error LNK2005: main already defined in hello.obj
-C:\Work\practicegit\x64\Debug\Training24.exe : fatal error LNK1169: one or more multiply defined symbols found
