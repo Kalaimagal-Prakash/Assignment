@@ -18,7 +18,7 @@
 // h)	Get – gets the element at a particular index.
 // ------------------------------------------------------------------------------------------------
 // intlist.h
-// Program on Linked List Header File.
+// Program on A2 branch.
 // ------------------------------------------------------------------------------------------------
 #ifndef INTLIST_H
 #define INTLIST_H
@@ -43,7 +43,7 @@ void Insert (LinkList* list, int index, int value);
 void RemoveAt (LinkList* list, int index);
 void Remove (LinkList* list, int value);
 int Count (LinkList* list);
-int Get (const LinkList* list, int index);
+void Get (const LinkList* list, int index, int* value);
 void PrintList (LinkList* list);
 
-#endif INTLIST_H
+#endif //INTLIST_H

@@ -3,18 +3,22 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------------------------------------
 // intlist.c
-// Program on Linked List Functions.
+// Program on A2 branch.
 // ------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
 #include <malloc.h>
 #include "intlist.h"
 
+//define error messages
+#define ERROR_OUT_OF_BOUNDS "Index out of bounds"
+#define ERROR_MEMORY_ALLOCATION "Memory allocation failed"
+#define ERROR_ELEMENT_NOT_FOUND "Element not found"
+
 //Create an empty linked list
 void Create (LinkList* list) {
    list->head = NULL;
    list->size = 0;
-   printf ("An Empty List is Created.\n");
 }
 
 //Delete the linked list and all elements
@@ -28,16 +32,13 @@ void DeleteList (LinkList* list) {
    }
    list->head = NULL;
    list->size = 0;
-   printf ("The list has been deleted.\n");
 }
 
 //Add an element to the end of the list.
 void Add (LinkList* list, int value) {
    struct Node* newNode = (struct Node*)malloc (sizeof (struct Node));
-   struct Node* lastNode = list->head;
    if (newNode == NULL) {
-      printf ("Memory allocation failed.\n");
-      return;
+      return ERROR_MEMORY_ALLOCATION;
    }
    newNode->data = value;
    newNode->link = NULL;
@@ -45,6 +46,7 @@ void Add (LinkList* list, int value) {
       list->head = newNode;
    }
    else {
+      struct Node* lastNode = list->head;
       while (lastNode->link != NULL) {
          lastNode = lastNode->link;
       }
@@ -56,8 +58,7 @@ void Add (LinkList* list, int value) {
 //Insert an element at a specific index
 void Insert (LinkList* list, int index, int value) {
    if (index < 0 || index > list->size) {
-      printf ("Index are out of bounds\n");
-      return;
+      return ERROR_OUT_OF_BOUNDS;
    }
    struct Node* newNode = (struct Node*)malloc (sizeof (struct Node));
    struct Node* currentNode = list->head;
@@ -76,11 +77,10 @@ void Insert (LinkList* list, int index, int value) {
    list->size++;
 }
 
-//Remove an element at a specific index
+//Remove an element at a specific -index
 void RemoveAt (LinkList* list, int index) {
    if (index < 0 || index > list->size) {
-      printf ("Index are out of bounds\n");
-      return;
+      return ERROR_OUT_OF_BOUNDS;
    }
    struct Node* currentNode = list->head;
    struct Node* previousNode = NULL;
@@ -109,8 +109,7 @@ void Remove (LinkList* list, int value) {
       currentNode = currentNode->link;
    }
    if (currentNode == NULL) {
-      printf ("Element %d not found in the list.\n", value);
-      return;
+      return ERROR_ELEMENT_NOT_FOUND;
    }
    if (previousNode == NULL) {
       list->head = currentNode->link;
@@ -128,24 +127,24 @@ int Count (LinkList* list) {
 }
 
 //Get the element at a specific index
-int Get (const LinkList* list, int index) {
+void Get (const LinkList* list, int index, int* value) {
    if (index < 0 || index >= list->size) {
-      printf ("Index out of bounds.\n");
-      return -1;
+      return ERROR_OUT_OF_BOUNDS;
    }
    struct Node* currentNode = list->head;
    for (int i = 0; i < index; i++) {
       currentNode = currentNode->link;
    }
-   return currentNode->data;
+   *value = currentNode->data;
 }
 
 //Print all element of the list
-void PrintList (LinkList* list) {
+void PrintList (const LinkList* list) {
    struct Node* currentNode = list->head;
    while (currentNode != NULL) {
-      printf ("%d->", currentNode->data);
+      printf ("%d -> ", currentNode->data);
       currentNode = currentNode->link;
    }
-   printf ("Null\n");
+   printf ("NULL\n");
 }
+

@@ -3,7 +3,7 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------
 // testintlist.c
-// Program on Testing Linked List Functions.
+// Program on A2 branch.
 // ------------------------------------------------------------------------------------------------
 
 #include <stdio.h>
@@ -14,13 +14,14 @@ int main () {
    LinkList list;
    //Create an empty linked list
    Create (&list);
-   //Add elements to the end of the list
+
+   // Add elements to the end of the list
    Add (&list, 10);
    Add (&list, 20);
    Add (&list, 30);
    Add (&list, 40);
    Add (&list, 20);
-   printf ("List before adding elements:");
+   printf ("List before inserting elements: ");
    PrintList (&list);
 
    //Insert element at specific indexes
@@ -36,17 +37,20 @@ int main () {
 
    //Remove the first occurrence of a specific element
    Remove (&list, 20);
-   printf ("List after removing the first occurrence of 20:");
+   printf ("List after removing the first occurrence of 20: ");
    PrintList (&list);
 
    //Count the number of elements in the list
-   printf ("The Number of elements in the list: %d\n", Count (&list));
+   printf ("The number of elements in the list: %d\n", Count (&list));
 
    //Get an element at a specific index
-   printf ("Element at index 1: %d\n", Get (&list, 1));
+   int value;
+   Get (&list, 1, &value);
+   printf ("Element at index 1: %d\n", value);
 
    //Delete the entire list
    DeleteList (&list);
+   printf ("List is deleted");
 
    return 0;
 }
