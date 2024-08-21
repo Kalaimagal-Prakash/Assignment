@@ -9,6 +9,28 @@
 #include <stdio.h>
 #include "intlist.h"
 
+//Print all element of the list
+void PrintList (const LinkList* list) {
+   struct Node* currentNode = list->head;
+   while (currentNode != NULL) {
+      printf ("%d -> ", currentNode->data);
+      currentNode = currentNode->link;
+   }
+   printf ("NULL\n");
+}
+
+//Prints the value at a specific index in the list or an error if the index is out of bounds
+void CheckGet (const LinkList* list, int index) {
+   int value;
+   int result = Get (list, index, &value);
+   if (result == ERROR_OUT_OF_BOUNDS) {
+      printf ("Error: list is empty.\n", index);
+   }
+   else {
+      printf ("Element at index %d: %d\n", index, value);
+   }
+}
+
 //Test program
 int main () {
    LinkList list;
@@ -50,7 +72,15 @@ int main () {
 
    //Delete the entire list
    DeleteList (&list);
-   printf ("List is deleted");
+   printf ("List is deleted\n");
 
+   //Count the element after deleting the list
+   printf ("The number of elements in the list: %d\n", Count (&list));
+
+   CheckGet (&list, 0);
+
+   // Print list after deletion to ensure it's empty
+   PrintList (&list);
+  
    return 0;
 }
