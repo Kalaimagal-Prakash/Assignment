@@ -20,10 +20,10 @@ void DeleteList (LinkList* list) {
    struct Node* nextNode;
    while (current != NULL) {          //Traverse the list and free each node
       nextNode = current->link;
-      free (current);                
+      free (current);
       current = nextNode;
    }
-   list->head = NULL;                
+   list->head = NULL;
    list->size = 0;
 }
 
