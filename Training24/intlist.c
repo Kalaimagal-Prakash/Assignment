@@ -28,40 +28,31 @@ void DeleteList (LinkList* list) {
 }
 
 void Add (LinkList* list, int value) {
-   if (list == NULL)
-      return;
+   if (list == NULL) return;
    struct Node* newNode = (struct Node*)malloc (sizeof (struct Node));
-   if (newNode == NULL) 
-      return ERROR_MEMORY_ALLOCATION;
+   if (newNode == NULL) return ERROR_MEMORY_ALLOCATION;
    newNode->data = value;
    newNode->link = NULL;
-   if (list->head == NULL) {
-      list->head = newNode;                // If the list is empty the new node becomes the head
-   }
+   if (list->head == NULL) list->head = newNode;                   // If the list is empty the new node becomes the head
    else {
       struct Node* lastNode = list->head;
-      while (lastNode->link != NULL) {      // Traverse to the end of the list
-         lastNode = lastNode->link;
-      }
+      while (lastNode->link != NULL)  lastNode = lastNode->link;  // Traverse to the end of the list
       lastNode->link = newNode;
    }
    list->size++;
 }
 
 void Insert (LinkList* list, int index, int value) {
-   if (index < 0 || index > list->size) 
-      return ERROR_OUT_OF_BOUNDS;
+   if (index < 0 || index > list->size) return ERROR_OUT_OF_BOUNDS;
    struct Node* newNode = (struct Node*)malloc (sizeof (struct Node));
-   struct Node* currentNode = list->head;
    newNode->data = value;
    if (index == 0) {
       newNode->link = list->head;
       list->head = newNode;
    }
    else {
-      for (int i = 0; i < index - 1; i++) {     // Traverse to the node before the insertion
-         currentNode = currentNode->link;
-      }
+      struct Node* currentNode = list->head;
+      for (int i = 0; i < index - 1; i++) currentNode = currentNode->link;    // Traverse to the node before the insertion
       newNode->link = currentNode->link;
       currentNode->link = newNode;
    }
@@ -69,15 +60,14 @@ void Insert (LinkList* list, int index, int value) {
 }
 
 void RemoveAt (LinkList* list, int index) {
-   if (index < 0 || index > list->size) 
-      return ERROR_OUT_OF_BOUNDS;
+   if (index < 0 || index > list->size) return ERROR_OUT_OF_BOUNDS;
    struct Node* currentNode = list->head;
-   struct Node* previousNode = NULL;
    if (index == 0) {
       list->head = currentNode->link;
       free (currentNode);
    }
    else {
+      struct Node* previousNode = NULL;
       for (int i = 0; i < index; i++) {         // Traverse to the node before the removal
          previousNode = currentNode;
          currentNode = currentNode->link;
@@ -95,12 +85,9 @@ void Remove (LinkList* list, int value) {
       previousNode = currentNode;
       currentNode = currentNode->link;
    }
-   if (currentNode == NULL) 
-      return ERROR_ELEMENT_NOT_FOUND;
-   if (previousNode == NULL) 
-      list->head = currentNode->link;
-   else 
-      previousNode->link = currentNode->link;
+   if (currentNode == NULL) return ERROR_ELEMENT_NOT_FOUND;
+   if (previousNode == NULL) list->head = currentNode->link;
+   else previousNode->link = currentNode->link;
    free (currentNode);
    list->size--;
 }
@@ -110,14 +97,10 @@ int Count (LinkList* list) {
 }
 
 int Get (const LinkList* list, int index, int* value) {
-   if (index < 0 || index >= list->size) 
-      return ERROR_OUT_OF_BOUNDS;
-   if (list->head == NULL)
-      return ERROR_OUT_OF_BOUNDS;
+   if (index < 0 || index >= list->size) return ERROR_OUT_OF_BOUNDS;
+   if (list->head == NULL) return ERROR_OUT_OF_BOUNDS;
    struct Node* currentNode = list->head;
-   for (int i = 0; i < index; i++) {          // Traverse to the desired index
-      currentNode = currentNode->link;
-   }
+   for (int i = 0; i < index; i++) currentNode = currentNode->link;    // Traverse to the desired index
    *value = currentNode->data;
    return 0;
 }

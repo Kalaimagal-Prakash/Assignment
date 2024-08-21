@@ -23,12 +23,8 @@ void PrintList (const LinkList* list) {
 void CheckGet (const LinkList* list, int index) {
    int value;
    int result = Get (list, index, &value);
-   if (result == ERROR_OUT_OF_BOUNDS) {
-      printf ("Error: list is empty.\n", index);
-   }
-   else {
-      printf ("Element at index %d: %d\n", index, value);
-   }
+   if (result == ERROR_OUT_OF_BOUNDS) printf ("Error: list is empty.\n", index);
+   else printf ("Element at index %d: %d\n", index, value);
 }
 
 //Test program
@@ -47,7 +43,7 @@ int main () {
    PrintList (&list);
 
    //Insert element at specific indexes
-   Insert (&list, 1, 15);
+   Insert (&list, 2, -2);
    Insert (&list, 3, 90);
    printf ("List after inserting elements: ");
    PrintList (&list);
@@ -68,7 +64,10 @@ int main () {
    //Get an element at a specific index
    int value;
    Get (&list, 1, &value);
-   printf ("Element at index 1: %d\n", value);
+   if (value != ERROR_OUT_OF_BOUNDS)
+      printf ("Element at index 2: %d\n", value);
+   else
+      printf ("Invalid index\n");
 
    //Delete the entire list
    DeleteList (&list);
@@ -81,6 +80,6 @@ int main () {
 
    // Print list after deletion to ensure it's empty
    PrintList (&list);
-  
+
    return 0;
 }

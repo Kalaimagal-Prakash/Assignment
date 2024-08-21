@@ -45,24 +45,33 @@ typedef struct LinkList {
  
 /// <summary>Initialize an empty linked list.</summary>
 void Create (LinkList* list);
+
 /// <summary>Delete all nodes in the linked list and free allocated memory.</summary>
 void DeleteList (LinkList* list);
+
 /// <summary>Add a new element to the end of the linked list.</summary>
 void Add (LinkList* list, int value);
+
 /// <summary>Insert an element at a specific index in the linked list.</summary>
 void Insert (LinkList* list, int index, int value);
+
 /// <summary>Remove the element at a specific index from the linked list.</summary>
 void RemoveAt (LinkList* list, int index);
+
 /// <summary>Remove the first occurrence of the node with a specific value.</summary>
 void Remove (LinkList* list, int value);
+
 /// <summary>Return the number of element in the linked list.</summary>
 int Count (LinkList* list);
+
 /// <summary>Get the element at a specific index and store it in the provided pointer./summary>
 int Get (const LinkList* list, int index, int* value);
+
 /// <summary>Print the elements of the linked list to the standard output./summary>
 void PrintList (LinkList* list);
+
 /// <summary>Check the value at a specific index in the linked list and print it.
 /// If the index is out of bounds, prints an error message.</summary>
 void CheckGet (const LinkList* list, int index);
 
-#endif //INTLIST_H
+#endif INTLIST_H
