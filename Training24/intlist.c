@@ -36,7 +36,7 @@ void Add (LinkList* list, int value) {
    if (list->head == NULL) list->head = newNode;                   // If the list is empty the new node becomes the head
    else {
       struct Node* lastNode = list->head;
-      while (lastNode->link != NULL)  lastNode = lastNode->link;  // Traverse to the end of the list
+      while (lastNode->link != NULL) lastNode = lastNode->link;  // Traverse to the end of the list
       lastNode->link = newNode;
    }
    list->size++;
@@ -82,7 +82,7 @@ void Remove (LinkList* list, int value) {
    struct Node* currentNode = list->head;
    struct Node* previousNode = NULL;
    if (currentNode == NULL) return ERROR_ELEMENT_NOT_FOUND;
-   while (currentNode != NULL && currentNode->data != value) {  // Traverse the list to find the node with the specified value
+   while (currentNode->data != value) {  // Traverse the list to find the node with the specified value
       previousNode = currentNode;
       currentNode = currentNode->link;
    }
