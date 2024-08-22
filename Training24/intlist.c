@@ -60,7 +60,7 @@ void Insert (LinkList* list, int index, int value) {
 }
 
 void RemoveAt (LinkList* list, int index) {
-   if (index < 0 || index > list->size) return ERROR_OUT_OF_BOUNDS;
+   if (list == NULL || list->head == NULL || index < 0 || index > list->size) return ERROR_OUT_OF_BOUNDS;
    struct Node* currentNode = list->head;
    if (index == 0) {
       list->head = currentNode->link;
@@ -81,11 +81,11 @@ void RemoveAt (LinkList* list, int index) {
 void Remove (LinkList* list, int value) {
    struct Node* currentNode = list->head;
    struct Node* previousNode = NULL;
+   if (currentNode == NULL) return ERROR_ELEMENT_NOT_FOUND;
    while (currentNode != NULL && currentNode->data != value) {  // Traverse the list to find the node with the specified value
       previousNode = currentNode;
       currentNode = currentNode->link;
    }
-   if (currentNode == NULL) return ERROR_ELEMENT_NOT_FOUND;
    if (previousNode == NULL) list->head = currentNode->link;
    else previousNode->link = currentNode->link;
    free (currentNode);

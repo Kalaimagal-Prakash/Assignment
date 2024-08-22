@@ -42,7 +42,7 @@ typedef struct LinkList {
    struct Node* head;
    int size;
 }LinkList;
- 
+
 /// <summary>Initialize an empty linked list.</summary>
 void Create (LinkList* list);
 

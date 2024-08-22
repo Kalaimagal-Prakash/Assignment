@@ -64,10 +64,8 @@ int main () {
    //Get an element at a specific index
    int value;
    Get (&list, 1, &value);
-   if (value != ERROR_OUT_OF_BOUNDS)
-      printf ("Element at index 2: %d\n", value);
-   else
-      printf ("Invalid index\n");
+   if (value != ERROR_OUT_OF_BOUNDS) printf ("Element at index 2: %d\n", value);
+   else printf ("Invalid index\n");
 
    //Delete the entire list
    DeleteList (&list);
