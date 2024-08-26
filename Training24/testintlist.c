@@ -30,7 +30,7 @@ void CheckGet (const LinkList* list, int index) {
 //Test program
 int main () {
    //Create an empty linked list
-   LinkList* list = Create();
+   LinkList* list = Create ();
    if (list == NULL) {
       printf ("Error creating the list.\n");
       return 1;
