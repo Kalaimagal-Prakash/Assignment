@@ -27,9 +27,11 @@
 #define INTLIST_H
 
 //define error messages
-#define ERROR_OUT_OF_BOUNDS "Index out of bounds"
-#define ERROR_MEMORY_ALLOCATION "Memory allocation failed"
-#define ERROR_ELEMENT_NOT_FOUND "Element not found"
+#define SUCCESS 0
+#define ERROR_OUT_OF_BOUNDS 1
+#define ERROR_MEMORY_ALLOCATION 2 
+#define ERROR_ELEMENT_NOT_FOUND 3
+#define ERROR_NULL_LIST -1
 
 //Define the structure of the node
 struct Node {
@@ -44,22 +46,22 @@ typedef struct LinkList {
 }LinkList;
 
 /// <summary>Initialize an empty linked list.</summary>
-void Create (LinkList* list);
+LinkList* Create ();
 
 /// <summary>Delete all nodes in the linked list and free allocated memory.</summary>
 void DeleteList (LinkList* list);
 
 /// <summary>Add a new element to the end of the linked list.</summary>
-void Add (LinkList* list, int value);
+int Add (LinkList* list, int value);
 
 /// <summary>Insert an element at a specific index in the linked list.</summary>
-void Insert (LinkList* list, int index, int value);
+int Insert (LinkList* list, int index, int value);
 
 /// <summary>Remove the element at a specific index from the linked list.</summary>
-void RemoveAt (LinkList* list, int index);
+int RemoveAt (LinkList* list, int index);
 
 /// <summary>Remove the first occurrence of the node with a specific value.</summary>
-void Remove (LinkList* list, int value);
+int Remove (LinkList* list, int value);
 
 /// <summary>Return the number of element in the linked list.</summary>
 int Count (LinkList* list);
@@ -74,4 +76,4 @@ void PrintList (LinkList* list);
 /// If the index is out of bounds, prints an error message.</summary>
 void CheckGet (const LinkList* list, int index);
 
-#endif INTLIST_H
+#endif INTLIST_H;
