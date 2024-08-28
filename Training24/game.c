@@ -4,7 +4,9 @@
 // ------------------------------------------------------------------
 // game.c
 // Program on A3 branch.
+// Convert the given decimal number to different forms (Decimal, Hexadecimal, Binary) 
 // ------------------------------------------------------------------------------------------------
+
 #include <stdio.h>
 
 /// <summary>Function to convert decimal to binary.</summary>
@@ -45,8 +47,8 @@ void decimalToHex (int h) {
    char hex_Number[100];
    int i = 0;
    int isNegative = h < 0;
-   if (isNegative) h = -h;  // Work with positive equivalent
-   if (h == 0) {                         // Handle zero case
+   if (isNegative) h = -h;                          // Work with positive equivalent
+   if (h == 0) {                                    // Handle zero case
       printf ("Hexadecimal value is: 0\n");
       return;
    }
