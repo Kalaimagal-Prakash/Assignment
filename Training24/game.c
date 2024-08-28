@@ -10,14 +10,8 @@
 #include <stdio.h>
 
 /// <summary>Function to convert decimal to binary.</summary>
-void decimalToBinary (int n) {
-   int binaryNum[32];
-   int i = 0;
-   int isNegative = n < 0;
-   if (n == 0) {                                 // Handle zero case
-      printf ("Binary: 0\n");
-      return;
-   }
+void DecimalToBinary (int n) {
+   int binaryNum[32], i = 0, isNegative = n < 0;
    if (isNegative) n = -n;                       // Work with positive equivalent
    while (n > 0) {                               // Convert decimal to binary
       binaryNum[i] = n % 2;
@@ -37,29 +31,20 @@ void decimalToBinary (int n) {
          carry = sum / 2;
       }
    }
-   printf ("\nBinary value is: %s", isNegative ? "-" : "");   // Print binary in reverse order
+   printf ("\nBinary value is: ");              // Print binary in reverse order
    for (int j = 7; j >= 0; j--) printf ("%d", binaryNum[j]);
    printf ("\n");
 }
 
 /// <summary>Function to convert decimal to hexadecimal.</summary>
-void decimalToHex (int h) {
+void DecimalToHex (int h) {
    char hex_Number[100];
-   int i = 0;
-   int isNegative = h < 0;
-   if (isNegative) h = -h;                          // Work with positive equivalent
-   if (h == 0) {                                    // Handle zero case
-      printf ("Hexadecimal value is: 0\n");
-      return;
-   }
+   int i = 0, isNegative = h < 0;
+   if (isNegative) h = -h;                             // Work with positive equivalent
    while (h != 0) {
       int temp = h % 16;
-      if (temp < 10) {
-         hex_Number[i++] = temp + '0';             // Convert to character
-      }
-      else {
-         hex_Number[i++] = temp + 'A' - 10;        // Convert to character
-      }
+      if (temp < 10) hex_Number[i++] = temp + '0';     // Convert to character
+      else hex_Number[i++] = temp + 'A' - 10;         // Convert to character
       h /= 16;
    }
    if (isNegative) printf ("Hexadecimal value is: -");     // Print the result
@@ -69,13 +54,13 @@ void decimalToHex (int h) {
 
 int main () {
    int number;
-   printf ("Input: ");                                  // Get user input
+   printf ("Enter the Input: ");                         // Get user input
    if (scanf_s ("%d", &number) != 1) {
-      printf ("Invalid input\n");
+      printf ("Invalid Input\n");
       return 1;
    }
    printf ("Decimal: %d\n", number);                   // Print decimal value
-   decimalToHex (number);                              // Print hexadecimal value
-   decimalToBinary (number);                           // Print binary value
+   DecimalToHex (number);                              // Print hexadecimal value
+   DecimalToBinary (number);                           // Print binary value
    return 0;
 }
