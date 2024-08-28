@@ -18,7 +18,7 @@ void decimalToBinary (int n) {
       printf ("Binary: 0\n");
       return;
    }
-   if (isNegative) n = -n;
+   if (isNegative) n = -n;                       // Work with positive equivalent
    while (n > 0) {                               // Convert decimal to binary
       binaryNum[i] = n % 2;
       n /= 2;
