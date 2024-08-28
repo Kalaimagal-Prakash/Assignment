@@ -38,17 +38,17 @@ void DecimalToBinary (int n) {
 
 /// <summary>Function to convert decimal to hexadecimal.</summary>
 void DecimalToHex (int h) {
-   char hex_Number[100];
-   int i = 0, isNegative = h < 0;
-   if (isNegative) h = -h;                             // Work with positive equivalent
-   while (h != 0) {
-      int temp = h % 16;
-      if (temp < 10) hex_Number[i++] = temp + '0';     // Convert to character
-      else hex_Number[i++] = temp + 'A' - 10;         // Convert to character
-      h /= 16;
+   char hex_Number[9]; 
+   unsigned int number = (unsigned int)h;          // Cast to unsigned to handle negative values correctly
+   int i = 0;
+   while (number != 0) {                           // Convert number to hexadecimal 
+      int temp = number % 16;
+      if (temp < 10) hex_Number[i++] = temp + '0'; // Convert to character '0'-'9'
+      else hex_Number[i++] = temp + 'A' - 10;      // Convert to character 'A'-'F'
+      number /= 16;
    }
-   if (isNegative) printf ("Hexadecimal value is: -");     // Print the result
-   else printf ("Hexadecimal value is: ");
+   while (i < 8) hex_Number[i++] = '0';
+   printf ("Hexadecimal value is: ");             // Print the hexadecimal in reverse order
    for (int j = i - 1; j >= 0; j--) printf ("%c", hex_Number[j]);
 }
 
