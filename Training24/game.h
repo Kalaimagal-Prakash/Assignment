@@ -13,15 +13,15 @@
 #define HEX_DIGIT BITS/4
 
 /// <summary>Function to convert Decimal to Binary.</summary>
-char* DecimalToBinary (int n);
+char* Dec2Bin (int n);
 
 /// <summary>Function to convert Decimal to Hexadecimal.</summary>
-char* DecimalToHex (int h);
+char* Dec2Hex (int h);
 
 /// <summary>Test cases for Decimal to Binary.</summary>
-void TestDecToBinAndNegBin ();
+void TestDec2Bin ();
 
 /// <summary>Test cases for Decimal to Hexadecimal.</summary>
-void TestDecToHexAndNegHex ();
+void TestDec2Hex ();
 
 #endif GAME_H
