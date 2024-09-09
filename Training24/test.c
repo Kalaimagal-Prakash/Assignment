@@ -1,12 +1,12 @@
 // ------------------------------------------------------------------------------------------------
 // Training ~ A training program for new joiners at Metamation, Batch - July 2024.
 // Copyright (c) Metamation India.
+// Kalaimagal V P
 // ------------------------------------------------------------------
 // test.c
 // Program on A3 branch.
 // Convert the given decimal number to different forms (Decimal, Hexadecimal, Binary)
 // ------------------------------------------------------------------------------------------------
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,29 +28,15 @@ void ClearScreen () {
 #endif
 }
 
-/// <summary>Function to print test results for binary conversion.</summary>
-void FormatBin (int numTests, int inputs[], const char* expected_results[], const char* actual_results[], int pass[]) {
+/// <summary>Function to print test results for conversion.</summary>
+void FormatResult (int numTests, int inputs[], const char* expected_results[], const char* actual_results[], int pass[]) {
    // Adjust column widths for alignment
-   printf (COLOR_YELLOW "-------------------------------------------- Test Results for Binary ------------------------------------------\n" COLOR_RESET);
-   printf ("| Test Case | Input       | Expected                            | Actual                               |Result|\n");
-   printf ("|-----------|-------------|-------------------------------------|--------------------------------------|------|\n");
+   printf (COLOR_YELLOW "-------------------------------------------- Test Results -----------------------------------------------------\n" COLOR_RESET);
+   printf ("| Test Case | Input       | Expected                            | Actual                              |Result|\n");
+   printf ("|-----------|-------------|-------------------------------------|-------------------------------------|------|\n");
    for (int i = 0; i < numTests; i++) {
       // Adjust column widths to match header alignment
-      printf ("| %-9d | %-11d | %-35s |" COLOR_GREEN " % -36s "COLOR_RESET"| % -6s | \n", i + 1, inputs[i], expected_results[i], actual_results[i] ? actual_results[i] : "NULL",
-         pass[i] ? COLOR_GREEN "PASS" COLOR_RESET : COLOR_RED "FAIL" COLOR_RESET);
-   }
-   printf ("\n");
-}
-
-/// <summary>Function to print test results for Hexadecimal conversion.</summary>
-void FormatHex (int numTests, int inputs[], const char* expected_results[], const char* actual_results[], int pass[]) {
-   // Adjust column widths for alignment
-   printf (COLOR_YELLOW "------------------- Test Results Hexadecimal -------------------\n" COLOR_RESET);
-   printf ("| Test Case | Input       | Expected     | Actual       |Result|\n");
-   printf ("|-----------|-------------|--------------|--------------|------|\n");
-   for (int i = 0; i < numTests; i++) {
-   // Adjust column widths to match header alignment
-      printf ("| %-9d | %-11d | %-12s |" COLOR_GREEN " %-12s "COLOR_RESET"| %-6s |\n", i + 1, inputs[i], expected_results[i], actual_results[i] ? actual_results[i] : "NULL",
+      printf ("| %-9d | %-11d | %-35s |" COLOR_GREEN " % -35s "COLOR_RESET"| % -6s | \n", i + 1, inputs[i], expected_results[i], actual_results[i] ? actual_results[i] : "NULL",
          pass[i] ? COLOR_GREEN "PASS" COLOR_RESET : COLOR_RED "FAIL" COLOR_RESET);
    }
    printf ("\n");
@@ -83,7 +69,7 @@ void TestDec2Bin () {
       actual_bin_result[i] = result;
    }
    // Call the function to format and print the results
-   FormatBin (numTests, inputs, expected_bin_result, actual_bin_result, pass);
+   FormatResult (numTests, inputs, expected_bin_result, actual_bin_result, pass);
    for (int i = 0; i < numTests; i++) free (actual_bin_result[i]);
    free (actual_bin_result);
    free (pass);
@@ -116,7 +102,7 @@ void TestDec2Hex () {
       actual_hex_result[i] = result;
    }
    // Call the function to format and print the results
-   FormatHex (numTests, inputs, expected_hex_result, actual_hex_result, pass);
+   FormatResult (numTests, inputs, expected_hex_result, actual_hex_result, pass);
    for (int i = 0; i < numTests; i++) free (actual_hex_result[i]);
    free (actual_hex_result);
    free (pass);
@@ -124,11 +110,12 @@ void TestDec2Hex () {
 
 int main () {
    // Run test cases
-   TestDec2Bin ();                                                          // Call test function for decimal to binary conversion      
+   TestDec2Bin ();                                                          // Call test function for decimal to binary conversion
    TestDec2Hex ();                                                          // Call test function for decimal to hexadecimal conversion
-   char choice;
+   char choice[100];
+   int num = 0;
    do {
-      int num = 0, validInput = 0;                                         // Variable to store the user input
+      int validInput = 0;                                                  // Variable to store the user input
       char buffer[100];
       while (!validInput) {                                                // Prompt the user for input
          printf ("Enter a decimal number: ");
@@ -138,33 +125,35 @@ int main () {
             if (*endptr == '\0' || *endptr == '\n') validInput = 1;
             else printf ("Invalid input. Please enter a valid decimal number.\n");
          }
-         if (!validInput) {
-            printf ("Do you want to try again? (y/n): ");
-            choice = getchar ();
-            while (getchar () != '\n');
-            if (choice != 'y' && choice != 'Y') {
-               printf ("Exiting the program.\n");
-               return 0;
-            }
-         }
       }
-      char* binaryStr = Dec2Bin (num);                           // Convert the decimal number to binary
+      char* binaryStr = Dec2Bin (num);
       if (binaryStr != NULL) {
          printf ("Binary: %s\n", binaryStr);
          free (binaryStr);
       }
-      else printf ("Memory allocation failed.\n");
-      char* hexStr = Dec2Hex (num);                                // Convert the decimal number to hexadecimal
+      else {
+         printf ("Memory allocation failed in Dec2Bin.\n");
+         return 1;
+      }
+      char* hexStr = Dec2Hex (num);
       if (hexStr != NULL) {
          printf ("Hexadecimal: %s\n", hexStr);
          free (hexStr);
       }
-      else printf ("Memory allocation failed.\n");
-      printf ("Decimal: %d\n", num);                                   // Print the decimal number
-      printf ("\nDo you want to enter another number? (y/n): ");       // Ask if user wants to continue
-      choice = getchar ();
-      while (getchar () != '\n');
-   } while (choice == 'y' || choice == 'Y');                           // Repeat if 'y' or 'Y'
-   printf ("Exiting the program.\n");
+      else {
+         printf ("Memory allocation failed in Dec2Hex.\n");
+         return 1;
+      }
+      printf ("Decimal: %d\n", num);
+      printf ("\nDo you want to enter another number? (y/n): ");         // Ask if the user wants to enter another number
+      if (fgets (choice, sizeof (choice), stdin)) {
+         ClearScreen ();
+         if (choice[0] == 'y' || choice[0] == 'Y');                      // Check if the first character of the response is 'y' or 'Y'
+         else {
+            printf ("Exiting the program.\n");
+            return 0;                                                   // Exit the program
+         }
+      }
+   } while (choice[0] == 'y' || choice[0] == 'Y');                      // Repeat if 'y' or 'Y'
    return 0;
 }

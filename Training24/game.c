@@ -1,30 +1,27 @@
 // ------------------------------------------------------------------------------------------------
 // Training ~ A training program for new joiners at Metamation, Batch - July 2024.
 // Copyright (c) Metamation India.
+// Kalaimagal V P
 // ------------------------------------------------------------------
 // game.c
 // Program on A3 branch.
 // Convert the given decimal number to different forms (Decimal, Hexadecimal, Binary) 
 // ------------------------------------------------------------------------------------------------
-
 #include <malloc.h>
 #include "game.h"
 
-/// <summary>Convert a decimal number to its binary representation.</summary>
 char* Dec2Bin (int n) {
    char* binaryStr = (char*)malloc (BITS + (BITS / 8) + 1);                 // Allocate memory for binary string with extra space for formatting
    if (binaryStr == NULL) return NULL;
-   int binaryNum[BITS],index=0;                                            // Array to store binary digits and index for the string
-   for (int i = 0; i < BITS; i++) binaryNum[BITS - 1 - i] = (n >> i) & 1;
+   int index = 0;                                                          // Index for the string
    for (int i = 0; i < BITS; i++) {
-      binaryStr[index++] = binaryNum[i] + '0';                            // Convert binary digit to character
+      binaryStr[index++] = ((n >> (BITS - 1 - i)) & 1) + '0';             // Convert binary digit to character
       if ((i + 1) % 8 == 0 && i != BITS - 1) binaryStr[index++] = ' ';    // Add space every 8 bits except at the end
    }
    binaryStr[index] = '\0';                                               // Null-terminate the string
    return binaryStr;
 }
 
-/// <summary>Convert a decimal number to its hexadecimal representation.</summary>
 char* Dec2Hex (int h) {
    int index = 0;
    char* hexStr = (char*)malloc (HEX_DIGIT + 3 + 1);                    // Allocate memory for hex string

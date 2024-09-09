@@ -1,12 +1,12 @@
 // ------------------------------------------------------------------------------------------------
 // Training ~ A training program for new joiners at Metamation, Batch - July 2024.
 // Copyright (c) Metamation India.
+// Kalaimagal V P
 // ------------------------------------------------------------------
 // game.h
 // Program on A3 branch.
 // Convert the given decimal number to different forms (Decimal, Hexadecimal, Binary) 
 // ------------------------------------------------------------------------------------------------
-
 #ifndef GAME_H
 #define GAME_H
 #define BITS 32
@@ -17,11 +17,5 @@ char* Dec2Bin (int n);
 
 /// <summary>Function to convert Decimal to Hexadecimal.</summary>
 char* Dec2Hex (int h);
-
-/// <summary>Test cases for Decimal to Binary.</summary>
-void TestDec2Bin ();
-
-/// <summary>Test cases for Decimal to Hexadecimal.</summary>
-void TestDec2Hex ();
 
 #endif GAME_H
