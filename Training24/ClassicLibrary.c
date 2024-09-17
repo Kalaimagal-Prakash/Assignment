@@ -11,18 +11,16 @@
 // 2. Write a program that reverses a given integer (as defined in C) as explained below and check if it is a palindrome.
 // ------------------------------------------------------------------------------------------------
 #include <stdbool.h>
-#include <ctype.h>
 #include <limits.h>
+#include <string.h>
+#include <ctype.h>
 #define MAXLENGTH 100
 
 bool Palindrome (const char* str) {
-   char filtered[MAXLENGTH];
-   int j = 0, left = 0;
-   for (int i = 0; str[i]; i++) if (isalnum (str[i])) filtered[j++] = tolower (str[i]);      // Filter out non-alphanumeric characters and convert to lowercase
-   filtered[j] = '\0';                                                                       // Null-terminate the filtered string
-   int right = j - 1;                                                                        // Ensure the right index is set correctly
+   int left = 0;
+   int right = strlen (str) - 1;                                           // Initialize right pointer to the end of the string
    while (left < right) {
-      if (filtered[left] != filtered[right]) return false;
+      if (tolower (str[left]) != tolower (str[right])) return false;
       left++;
       right--;
    }
@@ -31,12 +29,12 @@ bool Palindrome (const char* str) {
 
 int ReverseNumber (int num) {
    int reversed = 0;
-   int isNegative = (num < 0);
-   if (isNegative) num = -num;
-   while (num > 0) {                                                                       // Reverse the digits of the number
-      if (reversed > (INT_MAX - num % 10) / 10) return 0;
-      reversed = reversed * 10 + (num % 10);
-      num /= 10;
+   if (num < 0) return -2;                                                // Return -2 to indicate negative number
+   while (num > 0) {
+      int digit = num % 10;                                               // Extract the last digit
+      if (reversed > (INT_MAX - digit) / 10) return -1;                   // Handle overflow
+      reversed = reversed * 10 + digit;
+      num /= 10;                                                          // Remove the last digit from the original number
    }
-   return isNegative ? -reversed : reversed;
+   return reversed;
 }
