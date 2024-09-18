@@ -35,7 +35,7 @@ void ClearScreen () {
 #endif
 }
 
-void Filter (char* buffer, const char* temp) {
+void FilterChar (char* buffer, const char* temp) {
    int j = 0;
    for (int i = 0; temp[i] != '\0'; i++) {
       if (temp[i] != ' ' && temp[i] != ',' && temp[i] != '?' && temp[i] != '/' && temp[i] != '.') {           // Skip spaces, commas, question marks, dot and slash
@@ -47,13 +47,13 @@ void Filter (char* buffer, const char* temp) {
 }
 
 /// <summary>Function to print test results.</summary>
-void FormatResult (int numTests, const char* inputs[], const char* expected_results[], const char* actual_results[], int pass[]) {
+void FormatResult (int numTests, const char* inputs[], const char* actualResults[], int pass[]) {
    // Adjust column widths for alignment
-   printf (YELLOW "---------------------------------------- Test Results ----------------------------------------\n" RESET);
-   printf ("| Test Case | Input                           | Expected          | Actual            |Result|\n");
-   printf ("|-----------|---------------------------------|-------------------|-------------------|------|\n");
+   printf (YELLOW "------------------------------ Test Results ------------------------------\n" RESET);
+   printf ("| Test Case | Input                           | Output            |Result|\n");
+   printf ("|-----------|---------------------------------|-------------------|------|\n");
    for (int i = 0; i < numTests; i++)
-      printf ("| %-9d | %-31s | %-17s | %-17s | %6s |\n", i + 1, inputs[i], expected_results[i], actual_results[i] ? actual_results[i] : "NULL",
+      printf ("| %-9d | %-31s | %-17s | %6s |\n", i + 1, inputs[i], actualResults[i] ? actualResults[i] : "NULL",
          pass[i] ? GREEN "PASS" RESET : RED "FAIL" RESET);
    printf ("\n");
 }
@@ -67,7 +67,8 @@ void TestPalindrome () {
        {"civic", "Palindrome" }, { "madam", "Palindrome" }, { "12321", "Palindrome" },
        {"Was it a car or a cat I saw", "Palindrome" }, { "Hello, World!", "Not Palindrome" },
        {"A man, a plan, a canal, Panama", "Palindrome" },
-       {"A", "Palindrome" }, { "ab", "Not Palindrome" }, { "Able was I ere I saw Elba", "Palindrome" },{ "a@a", "Palindrome" } ,{ "@!$2", "Not Palindrome" } };
+       {"A", "Palindrome" }, { "ab", "Not Palindrome" }, { "Able was I ere I saw Elba", "Palindrome" }, { "a@a", "Palindrome" },
+       { "@!$2", "Not Palindrome" }, { "I did, did I?","Palindrome" } };
    int numTests = sizeof (tests) / sizeof (tests[0]);
    char** actualResults = malloc (numTests * sizeof (char*));
    int* pass = malloc (numTests * sizeof (int));
@@ -77,8 +78,8 @@ void TestPalindrome () {
    }
    for (int i = 0; i < numTests; ++i) {
       char temp[MAXLENGTH];
-      Filter (temp, tests[i].input);                                 // Filter out non-alphanumeric characters and convert to lowercase
-      bool result = Palindrome (temp);
+      FilterChar (temp, tests[i].input);                             // Filter out non-alphanumeric characters and convert to lowercase
+      bool result = PalindromeChecker (temp);
       const char* resultStr = result ? "Palindrome" : "Not Palindrome";
       actualResults[i] = _strdup (resultStr);
       pass[i] = (result == (strcmp (tests[i].expected, "Palindrome") == 0));
@@ -86,12 +87,12 @@ void TestPalindrome () {
    // Call the function to format and print the results
    FormatResult (numTests,
       (const char* []) {
-      "civic", "madam", "12321", "Was it a car or a cat I saw", "Hello, World!", "A man, a plan, a canal, Panama", "A", "ab", "Able was I ere I saw Elba", "a@a", "@!$2"
+      "civic", "madam", "12321", "Was it a car or a cat I saw", "Hello, World!", "A man, a plan, a canal, Panama", "A", "ab", "Able was I ere I saw Elba", "a@a", "@!$2", "I did, did I?"
    },
       (const char* []) {
-      "Palindrome", "Palindrome", "Palindrome", "Palindrome", "Not Palindrome", "Palindrome", "Palindrome", "Not Palindrome", "Palindrome", "Palindrome", "Not Palindrome"
+      "Palindrome", "Palindrome", "Palindrome", "Palindrome", "Not Palindrome", "Palindrome", "Palindrome", "Not Palindrome", "Palindrome", "Palindrome", "Not Palindrome", "Palindrome"
    },
-      (const char**)actualResults, pass);
+      pass);
    for (int i = 0; i < numTests; ++i) free (actualResults[i]);
    free (actualResults);
    free (pass);
@@ -104,7 +105,7 @@ void TestReverseNumber () {
       int expected;
    } tests[] = {
        {1234, 4321}, {0, 0}, {1000, 1 },
-       {10, 1}, {9, 9}, {3456, 6543}
+       {10, 1}, {9, 9}, {3456, 6543}, {-11234, -43211}, {-42145142, -24154124}
    };
    int numTests = sizeof (tests) / sizeof (tests[0]);
    int* actualResults = malloc (numTests * sizeof (int));
@@ -120,13 +121,10 @@ void TestReverseNumber () {
    }
    FormatResult (numTests,
       (const char* []) {
-      "1234", "0", "1000", "10", "9", "3456"
+      "1234", "0", "1000", "10", "9", "3456", "-11234", "-42145142"
    },
       (const char* []) {
-      "4321", "0", "1", "1", "9", "6543"
-   },
-      (const char* []) {
-      "4321", "0", "1", "1", "9", "6543"
+      "4321", "0", "1", "1", "9", "6543", "-43211", "-24154124"
    },
       pass);
    free (actualResults);
@@ -140,24 +138,26 @@ int main () {
    char buffer[MAXLENGTH], choice[MAXLENGTH], temp[MAXLENGTH];
    int num = 0;
    while (1) {
-      printf ("\nEnter a string or integer: ");
+      printf (MAGENTA"\nEnter a string or integer: "RESET);
       if (fgets (buffer, sizeof (buffer), stdin)) {
          buffer[strcspn (buffer, "\n")] = '\0';                                               // Remove newline character
          char* endptr;
          num = (int)strtol (buffer, &endptr, 10);                                             // Convert input to integer
          if (*endptr == '\0' || *endptr == '\n') {
-            int reversedNum = ReverseNumber (num);
-            if (reversedNum == -1) printf ("Overflow\n");
-            else if (reversedNum == -2) printf ("Not a Palindrome (Negative Number)\n");
+            if (num < 0) printf ("Not a Palindrome (Negative Number)\n");
             else {
-               printf ("Reversed Number: %d\n", reversedNum);
-               if (reversedNum == num) printf ("Palindrome\n");
-               else printf ("Not a Palindrome\n");
+               int reversedNum = ReverseNumber (num);
+               if (reversedNum == -1) printf ("Overflow\n");
+               else {
+                  printf ("Reversed Number: %d\n", reversedNum);
+                  if (reversedNum == num) printf ("Palindrome\n");
+                  else printf ("Not a Palindrome\n");
+               }
             }
          }
          else {
-            Filter (temp, buffer);
-            if (Palindrome (temp)) printf ("Palindrome\n");
+            FilterChar (temp, buffer);
+            if (PalindromeChecker (temp)) printf ("Palindrome\n");
             else printf ("Not a Palindrome\n");
          }
       }

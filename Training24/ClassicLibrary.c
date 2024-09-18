@@ -12,14 +12,15 @@
 // ------------------------------------------------------------------------------------------------
 #include <stdbool.h>
 #include <limits.h>
-#include <string.h>
+#include <stdlib.h>
 #include <ctype.h>
 #define MAXLENGTH 100
 
-bool Palindrome (const char* str) {
-   int left = 0;
-   int right = strlen (str) - 1;                                           // Initialize right pointer to the end of the string
-   while (left < right) {
+bool PalindromeChecker (const char* str) {
+   int left = 0, right = 0;
+   while (str[right] != '\0') right++;                                      // Move the right pointer to the last character of the string
+   right--;
+   while (left < right) {                                                   // Compare characters from the start and end moving towards the center
       if (tolower (str[left]) != tolower (str[right])) return false;
       left++;
       right--;
@@ -29,12 +30,13 @@ bool Palindrome (const char* str) {
 
 int ReverseNumber (int num) {
    int reversed = 0;
-   if (num < 0) return -2;                                                // Return -2 to indicate negative number
-   while (num > 0) {
+   int negative = (num < 0) ? 1 : 0;
+   num = abs(num);
+   while (num != 0) {
       int digit = num % 10;                                               // Extract the last digit
       if (reversed > (INT_MAX - digit) / 10) return -1;                   // Handle overflow
       reversed = reversed * 10 + digit;
       num /= 10;                                                          // Remove the last digit from the original number
    }
-   return reversed;
+   return negative ? -reversed : reversed;
 }
