@@ -15,12 +15,12 @@
 #include <stdbool.h>
 
 /// <summary>Function to check the word is palindrome or not.</summary>
-bool PalindromeChecker (const char* str);
+bool IsPalindrome (const char* str);
 
 /// <summary>Function to remove special chars and convert to lowercase.</summary>
 void FilterChar (char* buffer, const char* temp);
 
-/// <summary>Function to check the integer to reverse and check if it's a palindrome.</summary>
+/// <summary>Function to Reverses the digits of an integer.</summary>
 int ReverseNumber (int num);
 
 #endif PALINDROME_H
