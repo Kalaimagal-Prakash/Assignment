@@ -17,9 +17,8 @@
 #define MAXLENGTH 100
 
 bool IsPalindrome (const char* str) {
-   size_t left = 0;
-   size_t right = strlen (str) - 1;
-   while (left < right) if (str[left++] != str[right--]) return false; 
+   size_t left = 0, right = strlen (str) - 1;
+   while (left < right) return (str[left++] != str[right--]) ? false : true;    // Return false if characters at 'left' and 'right' differ.
    return true;
 }
 

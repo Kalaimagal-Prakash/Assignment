@@ -31,16 +31,13 @@
 void ClearScreen () {
 #ifdef _WIN32
    system ("cls");           // Windows-specific command to clear the screen
-#else
-   system ("clear");        // Unix/Linux/MacOS-specific command to clear the screen
 #endif
 }
 
 void FilterChar (char* buffer, const char* temp) {
    int j = 0;
-   for (int i = 0; temp[i] != '\0'; i++) {
+   for (int i = 0; temp[i] != '\0'; i++)
       if (temp[i] != ' ' && temp[i] != ',' && temp[i] != '?' && temp[i] != '/' && temp[i] != '.') buffer[j++] = tolower (temp[i]);         // Skip spaces, commas, question marks, dot and slash
-   }
    buffer[j] = '\0';
 }
 
@@ -49,9 +46,8 @@ void FormatResult (int numTests, const char** inputs, const char** actualResults
    printf (YELLOW "------------------- Test Results for Palindrome Check --------------------\n" RESET);
    printf ("| Test Case | Input                           | Output            |Result|\n");
    printf ("|-----------|---------------------------------|-------------------|------|\n");
-   for (int i = 0; i < numTests; i++) 
-      printf ("| %-9d | %-31s | %-17s | %6s |\n", i + 1, inputs[i], actualResults[i] ? actualResults[i] : "NULL",
-         pass[i] ? GREEN "PASS" RESET : RED "FAIL" RESET);
+   for (int i = 0; i < numTests; i++)
+      printf ("| %-9d | %-31s | %-17s | %6s |\n", i + 1, inputs[i], actualResults[i] ? actualResults[i] : "NULL", pass[i] ? GREEN "PASS" RESET : RED "FAIL" RESET);
    printf ("\n");
 }
 
@@ -144,20 +140,21 @@ void main () {
          printf ("Error reading input.\n");
          continue;
       }
-      ClearScreen ();
-      buffer[strcspn (buffer, "\n")] = '\0';
-      char* endptr;
-      int num = (int)strtol (buffer, &endptr, 10);                                // Convert input to integer
-      int negative = (num < 0);
-      if (*endptr == '\0' || *endptr == '\n') {
-         int reversedNum = ReverseNumber (num);
-         (num < 0) ? printf ("Negative numbers are not palindromes.\nReversed Number: %d-\n", abs (reversedNum)) :
+      buffer[strcspn (buffer, "\n")] = '\0';                                     // Remove newline character
+      if (strlen (buffer) == 0 || strspn (buffer, " \\t\\r\\n") == strlen (buffer)) printf ("Empty string is not a palindrome.\n");             // Check for empty string
+      else {
+         char* endptr;
+         int num = (int)strtol (buffer, &endptr, 10);                            // Convert input to integer
+         if (*endptr == '\0' || *endptr == '\n') {
+            int reversedNum = ReverseNumber (num);
+            (num < 0) ? printf ("Negative numbers are not palindromes.\nReversed Number: %d-\n", abs (reversedNum)) :
             (reversedNum == -1) ? printf ("Overflow\n") :
             printf ("Reversed Number: %d \n%s\n", reversedNum, reversedNum == num ? "Palindrome\n" : "Not a Palindrome\n");
-      }
-      else {
-         FilterChar (temp, buffer);
-         printf (IsPalindrome (temp) ? "Palindrome\n" : "Not a Palindrome\n");
+         }
+         else {
+            FilterChar (temp, buffer);
+            printf (IsPalindrome (temp) ? "Palindrome\n" : "Not a Palindrome\n");
+         }
       }
       while (1) {
          printf ("\nDo you want to enter another input? (y/n): ");
