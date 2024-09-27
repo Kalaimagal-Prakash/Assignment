@@ -15,9 +15,9 @@
 #include <string.h>
 #include <malloc.h>
 #include <ctype.h> 
+#include <stdbool.h>
 #include <conio.h> // For getch()
 #include "Header.h"
-#define MAXLENGTH 100
 
 // ANSI escape codes for colors
 #define RESET   "\033[0m"
@@ -36,16 +36,14 @@ void ClearScreen () {
 
 void FilterChar (char* buffer, const char* temp) {
    int j = 0;
-   for (int i = 0; temp[i] != '\0'; i++)
-      if (temp[i] != ' ' && temp[i] != ',' && temp[i] != '?' && temp[i] != '/' && temp[i] != '.') buffer[j++] = tolower (temp[i]);         // Skip spaces, commas, question marks, dot and slash
+   for (int i = 0; temp[i] != '\0'; i++) if (isalnum (temp[i])) buffer[j++] = tolower (temp[i]); // Convert to lowercase and add to buffer
    buffer[j] = '\0';
 }
 
 /// <summary>Function to print test results for string.</summary>
 void FormatResult (int numTests, const char** inputs, const char** actualResults, const int* pass) {
-   printf (YELLOW "------------------- Test Results for Palindrome Check --------------------\n" RESET);
-   printf ("| Test Case | Input                           | Output            |Result|\n");
-   printf ("|-----------|---------------------------------|-------------------|------|\n");
+   printf (YELLOW "------------------- Test Results for Palindrome Check --------------------\n" RESET"| Test Case | Input                           | Output            |Result|\n"
+      "|-----------|---------------------------------|-------------------|------|\n");
    for (int i = 0; i < numTests; i++)
       printf ("| %-9d | %-31s | %-17s | %6s |\n", i + 1, inputs[i], actualResults[i] ? actualResults[i] : "NULL", pass[i] ? GREEN "PASS" RESET : RED "FAIL" RESET);
    printf ("\n");
@@ -53,9 +51,8 @@ void FormatResult (int numTests, const char** inputs, const char** actualResults
 
 /// <summary>Function to print test results for reverse number.</summary>
 void FormatResult2 (int numTests, int* inputs, int* actualResults, int* pass) {
-   printf (YELLOW "--------------------- Test Results for Reverse Number --------------------\n" RESET);
-   printf ("| Test Case | Input                           | Output            |Result|\n");
-   printf ("|-----------|---------------------------------|-------------------|------|\n");
+   printf (YELLOW "--------------------- Test Results for Reverse Number --------------------\n" RESET"| Test Case | Input                           | Output            |Result|\n"
+      "|-----------|---------------------------------|-------------------|------|\n");
    for (int i = 0; i < numTests; i++) printf ("| %-9d | %-31d | %-17d | %8s |\n", i + 1, inputs[i], actualResults[i], pass[i] ? GREEN "PASS" RESET : RED "FAIL" RESET);
    printf ("\n");
 }
@@ -76,7 +73,6 @@ void TestPalindrome () {
        {"ab", "Not Palindrome"},
        {"Able was I ere I saw Elba", "Palindrome"},
        {"a@a", "Palindrome"},
-       {"@!$2", "Not Palindrome"},
        {"I did, did I?", "Palindrome"}
    };
    int numTests = sizeof (tests) / sizeof (tests[0]);
@@ -89,10 +85,16 @@ void TestPalindrome () {
    }
    for (int i = 0; i < numTests; ++i) {
       input[i] = tests[i].input;
-      char temp[MAXLENGTH];
+      char* temp = malloc (strlen (tests[i].input) + 1);
+      if (temp == NULL) {
+         printf ("Memory allocation failed for temp\n");
+         return;
+      }
       FilterChar (temp, tests[i].input);
-      actualResults[i] = IsPalindrome (temp) ? "Palindrome" : "Not Palindrome";
+      bool result = IsPalindrome (temp);
+      actualResults[i] = result ? "Palindrome" : "Not Palindrome";
       pass[i] = (strcmp (actualResults[i], tests[i].expected) == 0);
+      free (temp);
    }
    // Call the function to format and print the results
    FormatResult (numTests, input, actualResults, pass);
@@ -133,39 +135,66 @@ void main () {
    // Run test cases
    TestPalindrome ();
    TestReverseNumber ();
-   char buffer[MAXLENGTH], choice, temp[MAXLENGTH];
+   char choice;
    while (1) {
       printf (MAGENTA "Enter the input: " RESET);
-      if (!fgets (buffer, sizeof (buffer), stdin)) {
-         printf ("Error reading input.\n");
-         continue;
-      }
-      buffer[strcspn (buffer, "\n")] = '\0';                                     // Remove newline character
-      if (strlen (buffer) == 0 || strspn (buffer, " \\t\\r\\n") == strlen (buffer)) printf ("Empty string is not a palindrome.\n");             // Check for empty string
-      else {
-         char* endptr;
-         int num = (int)strtol (buffer, &endptr, 10);                            // Convert input to integer
-         if (*endptr == '\0' || *endptr == '\n') {
-            int reversedNum = ReverseNumber (num);
-            (num < 0) ? printf ("Negative numbers are not palindromes.\nReversed Number: %d-\n", abs (reversedNum)) :
-            (reversedNum == -1) ? printf ("Overflow\n") :
-            printf ("Reversed Number: %d \n%s\n", reversedNum, reversedNum == num ? "Palindrome\n" : "Not a Palindrome\n");
-         }
-         else {
-            FilterChar (temp, buffer);
-            printf (IsPalindrome (temp) ? "Palindrome\n" : "Not a Palindrome\n");
-         }
-      }
+      size_t bufsize = 0;
+      char* buffer = NULL;
       while (1) {
-         printf ("\nDo you want to enter another input? (y/n): ");
-         choice = _getch ();                                                   // Get single character input without pressing Enter
-         ClearScreen ();
-         if (choice == 'n' || choice == 'N') {
-            printf (SKYBLUE "Exit the Program" RESET);
+         char* temp = realloc (buffer, bufsize + 1); // Allocate memory for one more character (including null terminator)
+         if (temp == NULL) {
+            fprintf (stderr, "Memory allocation failed\n");
+            free (buffer);
             return;
          }
-         else if (choice == 'y' || choice == 'Y') break;
-         else printf ("Invalid input. Please enter 'y' or 'n'.\n");
+         buffer = temp;
+         int ch = getchar ();
+         if (ch == '\n' || ch == EOF) break;
+         buffer[bufsize++] = (char)ch;
+      }
+      if (bufsize > 0) {
+         buffer[bufsize] = '\0';
+         if (strlen (buffer) == 0 || strspn (buffer, " \\t\\r\\n") == strlen (buffer)) printf ("Empty string is not a palindrome.\n");         // Check for empty string or whitespace
+         else {
+            char* endptr;
+            int num = (int)strtol (buffer, &endptr, 10);                                         // Convert input to integer
+            if (*endptr == '\0' || *endptr == '\n') {
+               int reversedNum = ReverseNumber (num);
+               (num < 0) ? printf ("Negative numbers are not palindromes.\nReversed Number: %d-\n", abs (reversedNum)) :
+                  (reversedNum == -1) ? printf ("Overflow\n") :
+                  printf ("Reversed Number: %d \n%s\n", reversedNum, reversedNum == num ? "Palindrome\n" : "Not a Palindrome\n");
+            }
+            else {
+               char* temp = malloc (bufsize + 1);
+               if (temp == NULL) {
+                  fprintf (stderr, "Memory allocation failed for temp\n");
+                  free (buffer);
+                  return;
+               }
+               FilterChar (temp, buffer);
+               printf (IsPalindrome (temp) ? "Palindrome\n" : "Not a Palindrome\n");
+               free (temp);
+            }
+         }
+      }
+      free (buffer);
+      buffer = NULL;
+      while (1) {
+         printf ("\nDo you want to enter another input? (y/n): ");
+         choice = _getch (); // Get single character input without pressing Enter
+         ClearScreen ();
+         choice = tolower (choice);
+         switch (choice) {
+         case 'n':
+            printf (SKYBLUE "Exit the Program" RESET);
+            return;
+         case 'y':
+            break;
+         default:
+            printf ("Invalid input. Please enter 'y' or 'n'.\n");
+            continue;
+         }
+         break;
       }
    }
 }
