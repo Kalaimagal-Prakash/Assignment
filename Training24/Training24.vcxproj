@@ -133,6 +133,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <ClCompile Include="hello.c" />
     <ClCompile Include="intlist.c" />
@@ -141,6 +142,16 @@
   <ItemGroup>
     <ClInclude Include="intlist.h" />
   </ItemGroup>
+||||||| 15f7678
+  <ItemGroup>
+    <ClCompile Include="Classiclibrary.c" />
+    <ClCompile Include="Test.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header.h" />
+  </ItemGroup>
+=======
+>>>>>>> main
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
