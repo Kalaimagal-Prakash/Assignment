@@ -172,7 +172,7 @@ void main () {
                   return;
                }
                FilterChar (temp, buffer);
-               printf (IsPalindrome (temp) ? "Palindrome\n" : "Not a Palindrome\n");
+               printf ("%s\n", IsPalindrome (temp) ? "Palindrome\n" : "Not a Palindrome\n");
                free (temp);
             }
          }
@@ -185,14 +185,11 @@ void main () {
          ClearScreen ();
          choice = tolower (choice);
          switch (choice) {
-         case 'n':
-            printf (SKYBLUE "Exit the Program" RESET);
-            return;
          case 'y':
             break;
          default:
-            printf ("Invalid input. Please enter 'y' or 'n'.\n");
-            continue;
+            printf (SKYBLUE "Exit the Program" RESET);
+            return;
          }
          break;
       }
