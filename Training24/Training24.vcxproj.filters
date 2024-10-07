@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClassicLibrary.c">
+    <ClCompile Include="intlist.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Test.c">
