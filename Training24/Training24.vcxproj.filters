@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Classiclibrary.c">
+    <ClCompile Include="ClassicLibrary.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Test.c">
