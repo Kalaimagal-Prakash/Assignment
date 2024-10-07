@@ -127,12 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="hello.c" />
-    <ClCompile Include="intlist.c" />
-    <ClCompile Include="testintlist.c" />
+    <ClCompile Include="Classiclibrary.c" />
+    <ClCompile Include="Test.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="intlist.h" />
+    <ClInclude Include="Header.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

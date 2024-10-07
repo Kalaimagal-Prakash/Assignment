@@ -15,19 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="intlist.c">
+    <ClCompile Include="Classiclibrary.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="testintlist.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hello.c">
+    <ClCompile Include="Test.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="intlist.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Header.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
