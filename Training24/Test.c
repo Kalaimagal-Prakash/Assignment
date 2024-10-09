@@ -141,7 +141,7 @@ void main () {
       size_t bufsize = 0;
       char* buffer = NULL;
       while (1) {
-         char* temp = realloc (buffer, bufsize + 1); // Allocate memory for one more character (including null terminator)
+         char* temp = realloc (buffer, bufsize + 1);
          if (temp == NULL) {
             fprintf (stderr, "Memory allocation failed\n");
             free (buffer);
@@ -152,17 +152,18 @@ void main () {
          if (ch == '\n' || ch == EOF) break;
          buffer[bufsize++] = (char)ch;
       }
-      if (bufsize > 0) {
+      if (bufsize > 4000) printf (RED "The input exceeds the maximum length.\n" RESET);
+      else if (bufsize > 0) {
          buffer[bufsize] = '\0';
-         if (strlen (buffer) == 0 || strspn (buffer, " \\t\\r\\n") == strlen (buffer)) printf ("Empty string is not a palindrome.\n");         // Check for empty string or whitespace
+         // Check for empty string or whitespace
+         if (strlen (buffer) == 0 || strspn (buffer, " \t\r\n") == strlen (buffer)) printf ("Empty string is not a palindrome.\n");
          else {
             char* endptr;
-            int num = (int)strtol (buffer, &endptr, 10);                                         // Convert input to integer
+            int num = (int)strtol (buffer, &endptr, 10);
             if (*endptr == '\0' || *endptr == '\n') {
                int reversedNum = ReverseNumber (num);
-               (num < 0) ? printf ("Negative numbers are not palindromes.\nReversed Number: %d-\n", abs (reversedNum)) :
-                  (reversedNum == -1) ? printf ("Overflow\n") :
-                  printf ("Reversed Number: %d \n%s\n", reversedNum, reversedNum == num ? "Palindrome\n" : "Not a Palindrome\n");
+               printf ((num < 0) ? "Negative numbers are not palindromes.\nReversed Number: %d-\n" :
+                  (reversedNum == -1) ? "Overflow\n" : "Reversed Number: %d \n%s\n",reversedNum, reversedNum == num ? "Palindrome" : "Not a Palindrome");
             }
             else {
                char* temp = malloc (bufsize + 1);
@@ -172,7 +173,7 @@ void main () {
                   return;
                }
                FilterChar (temp, buffer);
-               printf ("%s\n", IsPalindrome (temp) ? "Palindrome\n" : "Not a Palindrome\n");
+               printf ("%s\n", IsPalindrome (temp) ? "Palindrome" : "Not a Palindrome");
                free (temp);
             }
          }
@@ -184,14 +185,9 @@ void main () {
          choice = _getch (); // Get single character input without pressing Enter
          ClearScreen ();
          choice = tolower (choice);
-         switch (choice) {
-         case 'y':
-            break;
-         default:
-            printf (SKYBLUE "Exit the Program" RESET);
-            return;
-         }
-         break;
+         if (choice == 'y') break;
+         printf (SKYBLUE "Exit the Program" RESET);
+         return;
       }
    }
 }

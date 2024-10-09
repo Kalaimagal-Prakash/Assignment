@@ -14,7 +14,6 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAXLENGTH 100
 
 bool IsPalindrome (const char* str) {
    size_t left = 0, right = strlen (str) - 1;
