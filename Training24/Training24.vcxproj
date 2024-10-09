@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Classiclibrary.c" />
+    <ClCompile Include="ClassicLibrary.c" />
     <ClCompile Include="Test.c" />
   </ItemGroup>
   <ItemGroup>
