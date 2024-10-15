@@ -17,8 +17,8 @@
 
 bool IsPalindrome (const char* str) {
    size_t left = 0, right = strlen (str) - 1;
-   while (left < right) return (str[left++] != str[right--]) ? false : true;    // Return false if characters at 'left' and 'right' differ.
-   return true;
+   while (left < right) if (str[left++] != str[right--]) return false;  // Return false if characters at 'left' and 'right' differ.
+   return true;                                                         // All characters matched; it's a palindrome.
 }
 
 int ReverseNumber (int num) {
