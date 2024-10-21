@@ -50,9 +50,9 @@ void PrintTestCase (int numTests, IndexedElement inputs[], int size, int searchE
    InsertionSort (sortedArray, size);
    printf (YELLOW "------------------ Test Case %d -------------------\n" RESET, numTests);
    printf ("| Input Array:            ");
-   DisplayArray ((int*)inputs, size);      // Display original input array
+   DisplayArray ((int*)inputs, size);
    printf ("| Output Array:           ");
-   DisplayArray ((int*)sortedArray, size); // Display sorted array
+   DisplayArray ((int*)sortedArray, size);
    // Check if sorted correctly
    if (IsSorted ((int*)sortedArray, size)) printf ("Insertion sort: " GREEN "PASS" RESET "\n");
    else printf ("Insertion sort: " RED "FAIL" RESET "\n");
