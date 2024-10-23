@@ -11,7 +11,7 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-///  <summary>Define the structure for pairing elements with their original indices.</summary>
+///  <summary>Define the structure for to store the actual value of the element and the original index of element in the input array.</summary>
 typedef struct {
    int value, originalIndex;
 } IndexedElement;

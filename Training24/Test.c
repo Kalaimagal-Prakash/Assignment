@@ -62,7 +62,7 @@ void PrintTestCase (int numTests, IndexedElement inputs[], int size, int searchE
       int originalIndex = sortedArray[index].originalIndex;
       printf ("Element %d found at sorted index %d (original index %d).\n", searchElement, index, originalIndex);
    }
-   else printf ("Element %d not found.\n", searchElement);
+   else printf (RED"Element %d not found.\n"RESET, searchElement);
    printf ("--------------------------------------------------\n\n");
 }
 
@@ -71,16 +71,18 @@ void TestSort () {
    struct {
       int input[50], searchElement, size;
    } tests[] = {
-       {{34, 7, 23, 32, 10}, 23, 5},
+       {{34, 7, 23, 32, 10}, 2, 5},          // Search for an element not in the array
        {{5, 3, 8, 1, 2, 6}, 8, 6},
        {{11, 2}, 11, 2},
        {{12, 11, 13, 5}, 5, 4},
        {{-1, -2, -3, -4, -5, -6, -7}, -3, 7},
        {{99, 3, 14}, 14, 3},
-       {{-10, 0, 5, 2}, 0, 4}
+       {{-10, 0, 5, 2}, 0, 4},
+       {{1, 2, 3, 4, 5}, 6, 5}               // Search for an element not in the array
    };
    int numTests = sizeof (tests) / sizeof (tests[0]);
    for (int i = 0; i < numTests; i++) {
+      // Declare an array of IndexedElement to hold the indexed inputs for the current test case.
       IndexedElement indexedInput[50];
       for (int j = 0; j < tests[i].size; j++) {
          indexedInput[j].value = tests[i].input[j];
@@ -124,7 +126,7 @@ void ManualArrayInput () {
          fgets (buffer, sizeof (buffer), stdin);
          find = atoi (buffer);
          int index = BinarySearch (indexedArray, num, find);
-         if (index != -1) printf ("Element found at index %d (original index %d).\n", index, indexedArray[index].originalIndex);
+         if (index != -1) printf ("Element %d found at index %d (original index %d).\n", find, index, indexedArray[index].originalIndex);
          else printf (RED "Element not found.\n" RESET);
          printf (YELLOW "\nDo you want to search for another number? (y/n): " RESET);
          choice = tolower (_getch ());
