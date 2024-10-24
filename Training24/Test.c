@@ -41,6 +41,12 @@ bool IsSorted (IndexedElement arr[], int size) {
    for (int i = 1; i < size; i++) if (arr[i - 1].value > arr[i].value) return false; // Not sorted
    return true; // Sorted
 }
+/// <summary>Checks if the input string is a valid integer (digits only).</summary>
+int IsValidInteger (const char* str) {
+   if (str == NULL || *str == '\n') return 0;
+   for (int i = 0; str[i] != '\0' && str[i] != '\n'; i++) if (!isdigit (str[i])) return 0;
+   return 1;
+}
 
 /// <summary>Function to format and print test results.</summary>
 void PrintTestCase (int numTests, IndexedElement inputs[], int size, int searchElement) {
@@ -109,6 +115,12 @@ void ManualArrayInput () {
       for (int i = 0; i < num; i++) {
          fgets (buffer, sizeof (buffer), stdin);
          arr[i] = atoi (buffer);
+         if (!IsValidInteger (buffer)) {
+            printf ("Invalid input. Please enter a valid integer.\n");
+            i--; // Decrement i to repeat this iteration for the same index
+            continue;
+         }
+         arr[i] = atoi (buffer);
       }
       // Create an array of IndexedElements for sorting
       IndexedElement indexedArray[50];
@@ -118,19 +130,22 @@ void ManualArrayInput () {
       }
       InsertionSort (indexedArray, num);
       printf (GREEN "Sorted array: " RESET);
-      DisplayArray (indexedArray, num); // Use DisplayArray to show the sorted array
+      DisplayArray (indexedArray, num);
       char choice = 'y';
       do {
          printf ("\nEnter a number to search: ");
-         int find;
          fgets (buffer, sizeof (buffer), stdin);
-         find = atoi (buffer);
-         int index = BinarySearch (indexedArray, num, find);
-         if (index != -1) printf ("Element %d found at index %d (original index %d).\n", find, index, indexedArray[index].originalIndex);
-         else printf (RED "Element not found.\n" RESET);
+         buffer[strcspn (buffer, "\n")] = '\0';
+         if (IsValidInteger (buffer)) {
+            int find = atoi (buffer);
+            int index = BinarySearch (indexedArray, num, find);
+            if (index != -1) printf ("Element %d found at index %d (original index %d).\n", find, index, indexedArray[index].originalIndex);
+            else printf (RED "Element not found.\n" RESET);
+         }
+         else printf ("Invalid input. Enter a valid integer.\n");
          printf (YELLOW "\nDo you want to search for another number? (y/n): " RESET);
          choice = tolower (_getch ());
-      } while (choice == 'y');
+         } while (choice == 'y');
       ClearScreen ();
       printf (YELLOW "\nDo you want to input another array? (y/n): " RESET);
       continueInput = tolower (_getch ());
