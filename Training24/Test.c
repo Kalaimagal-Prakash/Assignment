@@ -41,10 +41,13 @@ bool IsSorted (IndexedElement arr[], int size) {
    for (int i = 1; i < size; i++) if (arr[i - 1].value > arr[i].value) return false; // Not sorted
    return true; // Sorted
 }
+
 /// <summary>Checks if the input string is a valid integer (digits only).</summary>
 int IsValidInteger (const char* str) {
-   if (str == NULL || *str == '\n') return 0;
-   for (int i = 0; str[i] != '\0' && str[i] != '\n'; i++) if (!isdigit (str[i])) return 0;
+   if (str == NULL || *str == '\n' || *str == '\0') return 0;
+   while (isspace (*str)) str++;
+   if (*str == '+' || *str == '-') str++;
+   for (; *str != '\0' && *str != '\n'; str++) if (!isdigit (*str)) return 0;
    return 1;
 }
 
@@ -145,7 +148,7 @@ void ManualArrayInput () {
          else printf ("Invalid input. Enter a valid integer.\n");
          printf (YELLOW "\nDo you want to search for another number? (y/n): " RESET);
          choice = tolower (_getch ());
-         } while (choice == 'y');
+      } while (choice == 'y');
       ClearScreen ();
       printf (YELLOW "\nDo you want to input another array? (y/n): " RESET);
       continueInput = tolower (_getch ());
