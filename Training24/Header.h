@@ -18,7 +18,7 @@
 bool IsPalindrome (const char* str);
 
 /// <summary>Function to remove special chars and convert to lowercase.</summary>
-void FilterChar (char* buffer, const char* temp);
+void FilterChar (const char* inputString, char* outputBuffer);
 
 /// <summary>Function to Reverses the digits of an integer.</summary>
 int ReverseNumber (int num);
