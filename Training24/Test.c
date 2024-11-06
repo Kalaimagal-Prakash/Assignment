@@ -14,8 +14,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
-#include <ctype.h> 
-#include <conio.h> // For getch()
+#include <ctype.h>
+#include <limits.h>
+#include <conio.h>
 #include "Header.h"
 
 // ANSI escape codes for colors
@@ -134,12 +135,16 @@ void main () {
          if (strlen (buffer) == 0 || strspn (buffer, " \t\r\n") == strlen (buffer)) printf ("Empty string is not a palindrome.\n");
          else {
             char* endptr;
-            int num = (int)strtol (buffer, &endptr, 10);
+            long num = strtol (buffer, &endptr, 10);
             if (*endptr == '\0' || *endptr == '\n') {
-               int reversedNum = ReverseNumber (num);
-               printf ((num < 0) ? "Negative numbers are not palindromes.\nReversed Number: %d\n" :
-                  reversedNum == -1 ? "Overflow\n" : "Reversed Number: %d \n%s\n",
-                  reversedNum, reversedNum == num ? "Palindrome" : "Not a Palindrome");
+               if (num >= INT_MIN && num <= INT_MAX) {
+                  int intValue = (int)num;
+                  int reversedNum = ReverseNumber (intValue);
+                  printf ((num < 0) ? "Negative numbers are not palindromes.\nReversed Number: %d\n" :
+                     reversedNum == -1 ? "Overflow\n" : "Reversed Number: %d \n%s\n",
+                     reversedNum, reversedNum == num ? "Palindrome" : "Not a Palindrome");
+               }
+               else printf ("Number out of range for int.\n");
             }
             else {
                char* temp = malloc (bufsize + 1);
@@ -153,18 +158,18 @@ void main () {
                free (temp);
             }
          }
-      }
-      free (buffer);
-      buffer = NULL;
-      while (1) {
-         printf ("\nDo you want to enter another input? (y/n): ");
-         choice = _getch (); // Get single character input without pressing Enter
-         ClearScreen ();
-         choice = tolower (choice);
-         if (choice == 'y') break;
-         if (choice == 'n') {
-            printf (SKYBLUE "Exit the Program" RESET);
-            return;
+         free (buffer);
+         buffer = NULL;
+         while (1) {
+            printf ("\nDo you want to enter another input? (y/n): ");
+            choice = _getch (); // Get single character input without pressing Enter
+            ClearScreen ();
+            choice = tolower (choice);
+            if (choice == 'y') break;
+            if (choice == 'n') {
+               printf (SKYBLUE "Exit the Program" RESET);
+               return;
+            }
          }
       }
    }

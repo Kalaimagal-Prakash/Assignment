@@ -16,14 +16,14 @@
 #include <string.h>
 
 bool IsPalindrome (const char* str) {
-   int left = 0, right = strlen (str) - 1;
+   size_t left = 0, right = strlen (str) - 1;
    while (left < right) if (str[left++] != str[right--]) return false;  // Return false if characters at 'left' and 'right' differ.
    return true;                                                         // All characters matched; it's a palindrome.
 }
 
 int ReverseNumber (int num) {
    int reversed = 0, negative = num < 0;
-   num = abs(num);
+   num = abs (num);
    while (num != 0) {
       int digit = num % 10;                                               // Extract the last digit
       if (reversed > (INT_MAX - digit) / 10) return -1;                   // Handle overflow
