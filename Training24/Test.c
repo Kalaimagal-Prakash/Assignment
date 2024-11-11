@@ -5,13 +5,13 @@
 // ------------------------------------------------------------------------------------------------
 // Test.c
 // Program on A5 branch.
-// Test.c - The program sorts integers with insertion sort and searches for numbers using binary search, 
+// Test.c - The program sorts integers with insertion sort and searches for numbers using binary search,
 // with options for test cases and user input.
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
-#include <ctype.h>    // For tolower
-#include <stdlib.h>   // For strtol and realloc
-#include <conio.h>    // For getch()
+#include <ctype.h>
+#include <stdlib.h>
+#include <conio.h>
 #include <stdbool.h>
 #include "header.h"
 
@@ -25,25 +25,25 @@
 /// <summary>Function to clear the console screen.</summary>
 void ClearScreen () {
 #ifdef _WIN32
-   system ("cls");           // Windows-specific command to clear the screen
+   system ("cls");
 #endif
 }
 
 /// <summary>Function to display the elements of an array.</summary>
-void DisplayArray (IndexedElement arr[], int size) {
+static void DisplayArray (IndexedElement arr[], int size) {
    printf ("| ");
    for (int i = 0; i < size; i++) printf ("%d  ", arr[i].value);
    printf ("|\n");
 }
 
 /// <summary>Function to check if the array is sorted.</summary>
-bool IsSorted (IndexedElement arr[], int size) {
+static bool IsSorted (IndexedElement arr[], int size) {
    for (int i = 1; i < size; i++) if (arr[i - 1].value > arr[i].value) return false; // Not sorted
    return true; // Sorted
 }
 
 /// <summary>Checks if the input string is a valid integer (digits only).</summary>
-int IsValidInteger (const char* str) {
+static int IsValidInteger (const char* str) {
    if (str == NULL || *str == '\n' || *str == '\0') return 0;
    while (isspace (*str)) str++;
    if (*str == '+' || *str == '-') str++;
@@ -52,7 +52,7 @@ int IsValidInteger (const char* str) {
 }
 
 /// <summary>Function to format and print test results.</summary>
-void PrintTestCase (int numTests, IndexedElement inputs[], int size, int searchElement) {
+static void PrintTestCase (int numTests, IndexedElement inputs[], int size, int searchElement) {
    IndexedElement sortedArray[50];
    // Copy input array for sorting
    for (int i = 0; i < size; i++) sortedArray[i] = inputs[i];
@@ -62,7 +62,6 @@ void PrintTestCase (int numTests, IndexedElement inputs[], int size, int searchE
    DisplayArray ((int*)inputs, size);
    printf ("| Output Array:           ");
    DisplayArray ((int*)sortedArray, size);
-   // Check if sorted correctly
    if (IsSorted ((int*)sortedArray, size)) printf ("Insertion sort: " GREEN "PASS" RESET "\n");
    else printf ("Insertion sort: " RED "FAIL" RESET "\n");
    // Find the element in the sorted array
@@ -76,7 +75,7 @@ void PrintTestCase (int numTests, IndexedElement inputs[], int size, int searchE
 }
 
 /// <summary>Tests sorting and searching algorithms with predefined cases.</summary>
-void TestSort () {
+static void TestSort () {
    struct {
       int input[50], searchElement, size;
    } tests[] = {
@@ -102,7 +101,7 @@ void TestSort () {
 }
 
 /// <summary>User input for array creation, sorting, and element searching.</summary>
-void ManualArrayInput () {
+static void ManualArrayInput () {
    char continueInput = 'y';
    while (tolower (continueInput) == 'y') {
       int arr[50], num;
