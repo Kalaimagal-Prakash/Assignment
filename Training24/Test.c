@@ -5,14 +5,14 @@
 // ------------------------------------------------------------------------------------------------
 // Test.c
 // Program on A5 branch.
-// Test.c - The program sorts integers with insertion sort and searches for numbers using binary search,
-// with options for test cases and user input.
+// Test.c - The program sorts integers with insertion sort and searches for numbers using binary search.
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <conio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "header.h"
 
 // ANSI escape codes for colors
@@ -23,22 +23,22 @@
 #define RED     "\033[31m"
 
 /// <summary>Function to clear the console screen.</summary>
-void ClearScreen () {
+static void ClearScreen () {
 #ifdef _WIN32
    system ("cls");
 #endif
 }
 
 /// <summary>Function to display the elements of an array.</summary>
-static void DisplayArray (IndexedElement arr[], int size) {
+static void DisplayArray (int arr[], int size) {
    printf ("| ");
-   for (int i = 0; i < size; i++) printf ("%d  ", arr[i].value);
+   for (int i = 0; i < size; i++) printf ("%d  ", arr[i]);
    printf ("|\n");
 }
 
 /// <summary>Function to check if the array is sorted.</summary>
-static bool IsSorted (IndexedElement arr[], int size) {
-   for (int i = 1; i < size; i++) if (arr[i - 1].value > arr[i].value) return false; // Not sorted
+static bool IsSorted (int arr[], int size) {
+   for (int i = 1; i < size; i++) if (arr[i - 1] > arr[i]) return false; // Not sorted
    return true; // Sorted
 }
 
@@ -52,25 +52,21 @@ static int IsValidInteger (const char* str) {
 }
 
 /// <summary>Function to format and print test results.</summary>
-static void PrintTestCase (int numTests, IndexedElement inputs[], int size, int searchElement) {
-   IndexedElement sortedArray[50];
+static void PrintTestCase (int numTests, int inputs[], int size, int searchElement) {
+   int sortedArray[50];
    // Copy input array for sorting
    for (int i = 0; i < size; i++) sortedArray[i] = inputs[i];
    InsertionSort (sortedArray, size);
    printf (YELLOW "------------------ Test Case %d -------------------\n" RESET, numTests);
    printf ("| Input Array:            ");
-   DisplayArray ((int*)inputs, size);
+   DisplayArray (inputs, size);
    printf ("| Output Array:           ");
-   DisplayArray ((int*)sortedArray, size);
-   if (IsSorted ((int*)sortedArray, size)) printf ("Insertion sort: " GREEN "PASS" RESET "\n");
-   else printf ("Insertion sort: " RED "FAIL" RESET "\n");
+   DisplayArray (sortedArray, size);
+   printf ("| %s\n", IsSorted (sortedArray, size) ? "Insertion sort: " GREEN "PASS" RESET : "Insertion sort: " RED "FAIL" RESET);
    // Find the element in the sorted array
-   int index = BinarySearch ((int*)sortedArray, size, searchElement);
-   if (index != -1) {
-      int originalIndex = sortedArray[index].originalIndex;
-      printf ("Element %d found at sorted index %d (original index %d).\n", searchElement, index, originalIndex);
-   }
-   else printf (RED"Element %d not found.\n"RESET, searchElement);
+   int index = BinarySearch (sortedArray, size, searchElement);
+   if (index != -1) printf ("Element %d found at sorted index %d.\n", searchElement, index);
+   else printf (RED "Element %d not found.\n" RESET, searchElement);
    printf ("--------------------------------------------------\n\n");
 }
 
@@ -90,13 +86,7 @@ static void TestSort () {
    };
    int numTests = sizeof (tests) / sizeof (tests[0]);
    for (int i = 0; i < numTests; i++) {
-      // Declare an array of IndexedElement to hold the indexed inputs for the current test case.
-      IndexedElement indexedInput[50];
-      for (int j = 0; j < tests[i].size; j++) {
-         indexedInput[j].value = tests[i].input[j];
-         indexedInput[j].originalIndex = j;
-      }
-      PrintTestCase (i + 1, indexedInput, tests[i].size, tests[i].searchElement);
+      PrintTestCase (i + 1, tests[i].input, tests[i].size, tests[i].searchElement);
    }
 }
 
@@ -122,17 +112,11 @@ static void ManualArrayInput () {
             i--; // Decrement i to repeat this iteration for the same index
             continue;
          }
-         arr[i] = atoi (buffer);
       }
-      // Create an array of IndexedElements for sorting
-      IndexedElement indexedArray[50];
-      for (int i = 0; i < num; i++) {
-         indexedArray[i].value = arr[i];
-         indexedArray[i].originalIndex = i;
-      }
-      InsertionSort (indexedArray, num);
+      // Sort the array
+      InsertionSort (arr, num);
       printf (GREEN "Sorted array: " RESET);
-      DisplayArray (indexedArray, num);
+      DisplayArray (arr, num);
       char choice = 'y';
       do {
          printf ("\nEnter a number to search: ");
@@ -140,8 +124,8 @@ static void ManualArrayInput () {
          buffer[strcspn (buffer, "\n")] = '\0';
          if (IsValidInteger (buffer)) {
             int find = atoi (buffer);
-            int index = BinarySearch (indexedArray, num, find);
-            if (index != -1) printf ("Element %d found at index %d (original index %d).\n", find, index, indexedArray[index].originalIndex);
+            int index = BinarySearch (arr, num, find);
+            if (index != -1) printf ("Element %d found at index %d.\n", find, index);
             else printf (RED "Element not found.\n" RESET);
          }
          else printf ("Invalid input. Enter a valid integer.\n");
