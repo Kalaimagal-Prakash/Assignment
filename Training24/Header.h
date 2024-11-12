@@ -1,13 +1,18 @@
 // ------------------------------------------------------------------------------------------------
 // Training ~ A training program for new joiners at Metamation, Batch - July 2024.
 // Copyright (c) Metamation India.
+// Kalaimagal V P
 // ------------------------------------------------------------------------------------------------
 // Header.h
-// Program on main branch.
+// Program on A6 branch.
 // ------------------------------------------------------------------------------------------------
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef CHESSBOARD_H
+#define CHESSBOARD_H
+#include <stdio.h>
 
-char* GetString ();
+// Function declarations
+//void PrintChessboard (FILE* ChessFile);
+void PrintChessboard ();
+wchar_t GetPiece (int row, int col);
 
-#endif HEADER_H
+#endif // CHESSBOARD_H
