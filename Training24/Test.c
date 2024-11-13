@@ -65,7 +65,7 @@ static void PrintTestCase (int numTests, int inputs[], int size, int searchEleme
    printf ("| %s\n", IsSorted (sortedArray, size) ? "Insertion sort: " GREEN "PASS" RESET : "Insertion sort: " RED "FAIL" RESET);
    // Find the element in the sorted array
    int index = BinarySearch (sortedArray, size, searchElement);
-   if (index != -1) printf ("Element %d found at sorted index %d.\n", searchElement, index);
+   if (index >= 0) printf ("Element %d found at sorted index %d.\n", searchElement, index);
    else printf (RED "Element %d not found.\n" RESET, searchElement);
    printf ("--------------------------------------------------\n\n");
 }
@@ -85,9 +85,7 @@ static void TestSort () {
        {{1, 2, 3, 4, 5}, 6, 5}               // Search for an element not in the array
    };
    int numTests = sizeof (tests) / sizeof (tests[0]);
-   for (int i = 0; i < numTests; i++) {
-      PrintTestCase (i + 1, tests[i].input, tests[i].size, tests[i].searchElement);
-   }
+   for (int i = 0; i < numTests; i++) PrintTestCase (i + 1, tests[i].input, tests[i].size, tests[i].searchElement);
 }
 
 /// <summary>User input for array creation, sorting, and element searching.</summary>
@@ -125,7 +123,7 @@ static void ManualArrayInput () {
          if (IsValidInteger (buffer)) {
             int find = atoi (buffer);
             int index = BinarySearch (arr, num, find);
-            if (index != -1) printf ("Element %d found at index %d.\n", find, index);
+            if (index >= 0) printf ("Element %d found at sorted index %d.\n", find, index);
             else printf (RED "Element not found.\n" RESET);
          }
          else printf ("Invalid input. Enter a valid integer.\n");
