@@ -5,8 +5,7 @@
 // ------------------------------------------------------------------------------------------------
 // Header.h
 // Program on A5 branch.
-// Header.h - The header file declares functions for sorting integers with insertion sort and
-// searching for a target value using binary search.
+// Header.h - The functions for sorting integers and searching for a target value.
 // ------------------------------------------------------------------------------------------------
 #ifndef HEADER_H
 #define HEADER_H

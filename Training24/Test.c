@@ -3,9 +3,7 @@
 // Copyright (c) Metamation India.
 // Kalaimagal V P
 // ------------------------------------------------------------------------------------------------
-// Test.c
-// Program on A5 branch.
-// Test.c - The program sorts integers with insertion sort and searches for numbers using binary search.
+// Test.c - The program sorts integers and searches for numbers.
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include <ctype.h>

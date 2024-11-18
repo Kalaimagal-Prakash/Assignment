@@ -3,9 +3,7 @@
 // Copyright (c) Metamation India.
 // Kalaimagal V P
 // ------------------------------------------------------------------------------------------------
-// ClassicLibrary.c
-// Program on A5 branch.
-// ClassicLibrary.c - The program sorts numbers and searches for a specific number in the sorted list.
+// // ClassicLibrary.c - The program sorts numbers and searches for a specific number in the sorted list.
 // ------------------------------------------------------------------------------------------------
 void InsertionSort (int arr[], int size) {
    for (int i = 1; i < size; i++) {
