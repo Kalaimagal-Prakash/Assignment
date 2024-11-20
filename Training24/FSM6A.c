@@ -11,6 +11,7 @@
 #define _CRT_SECURE_NO_WARNINGS  1
 #include <stdio.h>
 
+/// See File: // FSMDiagram.png
 /// <summary>Define states of the Mealy machine.</summary>
 typedef enum {
    S0,  // Initial state
