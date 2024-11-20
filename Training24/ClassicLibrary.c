@@ -7,42 +7,7 @@
 // Program on A6 branch.
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
-#include "Header.h"
 
-// Static function definition (it must be the same name and signature as the declaration)
-//void PrintChessboard (FILE* ChessFile) {
-//   fwprintf (ChessFile, L"┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓\n");
-//
-//   // Loop through rows and columns to print the chessboard
-//   for (int row = 0; row < 8; row++) {
-//      for (int col = 0; col < 8; col++) {
-//         fwprintf (ChessFile, L"┃ %lc ", GetPiece (row, col));
-//      }
-//      fwprintf (ChessFile, L"┃\n");
-//      if (row != 7) {
-//         fwprintf (ChessFile, L"┣━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━┫\n");
-//      }
-//   }
-//   fwprintf (ChessFile, L"┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛\n");
-//}
-
-
-void PrintChessboard () {
-   wprintf (L"┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓\n");
-   // Loop through rows and columns to print the chessboard
-   for (int row = 0; row < 8; row++) {
-      for (int col = 0; col < 8; col++) {
-         wprintf (L"┃ %lc ", GetPiece (row, col));
-      }
-      wprintf (L"┃\n");
-      if (row != 7) {
-         wprintf (L"┣━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━┫\n");
-      }
-   }
-   wprintf (L"┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛\n");
-}
-
-// Function to determine which piece should be at a given position (row, col)
 wchar_t GetPiece (int row, int col) {
    if (row == 0) {  // Black pieces (first row)
       switch (col) {
@@ -54,13 +19,9 @@ wchar_t GetPiece (int row, int col) {
       default: return L' ';              // Empty (shouldn't happen)
       }
    }
-   else if (row == 1) {  // Black pawns (second row)
-      return L'\u265F'; // Black Pawn
-   }
-   else if (row == 6) {  // White pawns (second-to-last row)
-      return L'\u2659'; // White Pawn
-   }
-   else if (row == 7) {  // White pieces (last row)
+   else if (row == 1) return L'\u265F';  // Black Pawn
+   else if (row == 6) return L'\u2659';  // White Pawn
+   else if (row == 7) {                  // White pieces (last row)
       switch (col) {
       case 0: case 7: return L'\u2656';  // White Rook
       case 1: case 6: return L'\u2658';  // White Knight
@@ -70,6 +31,30 @@ wchar_t GetPiece (int row, int col) {
       default: return L' ';              // Empty (shouldn't happen)
       }
    }
-   // Empty squares in the middle of the board
    return L' '; // Empty square for all other rows
+}
+
+void PrintChessboard (FILE* fp) {
+   // Print the top border
+   wprintf (L"┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓\n");
+   fwprintf (fp, L"┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓\n");
+   // Loop through rows and columns to print the chessboard
+   for (int row = 0; row < 8; row++) {
+      // Print each row's
+      for (int col = 0; col < 8; col++) {
+         wchar_t piece = GetPiece (row, col);
+         wprintf (L"┃ %lc ", piece);          // Print to console
+         fwprintf (fp, L"┃ %lc ", piece);     // Print to file
+      }
+      wprintf (L"┃ \n");
+      fwprintf (fp, L"┃ \n");
+      // Print row separators
+      if (row != 7) {
+         wprintf (L"┣━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━┫\n");
+         fwprintf (fp, L"┣━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━┫\n");
+      }
+   }
+   // Print the bottom border
+   wprintf (L"┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛\n");
+   fwprintf (fp, L"┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛\n");
 }

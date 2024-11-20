@@ -3,16 +3,17 @@
 // Copyright (c) Metamation India.
 // Kalaimagal V P
 // ------------------------------------------------------------------------------------------------
-// Header.h
+// Header.h - Program to print chess board.
 // Program on A6 branch.
 // ------------------------------------------------------------------------------------------------
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
-#include <stdio.h>
+#include <cstdio>
 
-// Function declarations
-//void PrintChessboard (FILE* ChessFile);
-void PrintChessboard ();
+///<summary>Function to determine which piece should be at a given position (row, col).</summary>
 wchar_t GetPiece (int row, int col);
+
+///<summary>Returns the chess piece at the specified row and column on the chessboard.</summary>
+void PrintChessboard (FILE* fp);
 
 #endif // CHESSBOARD_H
