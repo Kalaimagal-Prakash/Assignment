@@ -1,0 +1,31 @@
+// ------------------------------------------------------------------------------------------------
+// Training ~ A training program for new joiners at Metamation, Batch - July 2024.
+// Copyright (c) Metamation India.
+// Kalaimagal V P 
+// ------------------------------------------------------------------------------------------------
+// ComplexNumber.h
+// Program on T1 branch.
+// ------------------------------------------------------------------------------------------------
+#ifndef COMPLEX_H
+#define COMPLEX_H
+
+typedef struct {
+   float real,imagine;
+}Complex;
+
+/// <summary>Adds two complex numbers</summary>
+Complex Op_Add (Complex a, Complex b);
+
+/// <summary>Subtract the one number to another complex numbers</summary>
+Complex Op_Sub (Complex a, Complex b);
+
+/// <summary>Multiply the two complex numbers</summary>
+Complex Op_Mul (Complex a, Complex b);
+
+/// <summary>Find the Modulus of a complex numbers</summary>
+float Op_Modulus (Complex x);
+
+/// <summary>Find the conjugate of a complex numbers</summary>
+Complex Op_Conjugate (Complex a);
+
+#endif COMPLEX_H
