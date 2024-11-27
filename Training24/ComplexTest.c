@@ -10,7 +10,7 @@
 #include <math.h>
 #include "ComplexNumber.h"
 
-void RunTests (float real1, float real2, float img1, float img2) {
+static void RunTests (float real1, float real2, float img1, float img2) {
    Complex a = { real1, img1 };
    Complex b = { real2, img2 };
    Complex sum;
