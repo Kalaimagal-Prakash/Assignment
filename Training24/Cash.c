@@ -1,9 +1,10 @@
 // ------------------------------------------------------------------------------------------------
 // Training ~ A training program for new joiners at Metamation, Batch - July 2024.
 // Copyright (c) Metamation India.
+// Kalaimagal V P
 // ------------------------------------------------------------------------------------------------
-// Classiclibrary.c
-// Program on main branch.
+// Cash.c
+// Program on Test1.3 branch.
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include "Cash.h"
