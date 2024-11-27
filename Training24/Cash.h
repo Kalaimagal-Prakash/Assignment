@@ -2,11 +2,12 @@
 // Training ~ A training program for new joiners at Metamation, Batch - July 2024.
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------------------------------------
-// Classiclibrary.c
+// Header.h
 // Program on main branch.
 // ------------------------------------------------------------------------------------------------
-char input[] = "Hello World!"; // Global character array
+#ifndef CASH_H
+#define CASH_H
 
-char* GetString () {
-   return input; // Return the global greeting
-}
+void CalculateChange (int cashPaid, int actualAmount);
+
+#endif CASH_H
