@@ -50,17 +50,13 @@ static int IsValidInteger (const char* str) {
 }
 
 /// <summary>Function to format and print test results.</summary>
-static void PrintTestCase (int numTests, int inputs[], int size, int searchElement) {
-   int sortedArray[50];
-   // Copy input array for sorting
-   for (int i = 0; i < size; i++) sortedArray[i] = inputs[i];
-   InsertionSort (sortedArray, size);
+static void PrintTestCase (int numTests, int inputs[], int sortedArray[], int size, int searchElement) {
    printf (YELLOW "------------------ Test Case %d -------------------\n" RESET, numTests);
    printf ("| Input Array:            ");
    DisplayArray (inputs, size);
    printf ("| Output Array:           ");
    DisplayArray (sortedArray, size);
-   printf ("| %s\n", IsSorted (sortedArray, size) ? "Insertion sort: " GREEN "PASS" RESET : "Insertion sort: " RED "FAIL" RESET);
+   printf ("| Insertion sort : %s\n", IsSorted (sortedArray, size) ? GREEN "PASS" RESET : RED "FAIL" RESET);
    // Find the element in the sorted array
    int index = BinarySearch (sortedArray, size, searchElement);
    if (index >= 0) printf ("Element %d found at sorted index %d.\n", searchElement, index);
@@ -83,13 +79,18 @@ static void TestSort () {
        {{1, 2, 3, 4, 5}, 6, 5}               // Search for an element not in the array
    };
    int numTests = sizeof (tests) / sizeof (tests[0]);
-   for (int i = 0; i < numTests; i++) PrintTestCase (i + 1, tests[i].input, tests[i].size, tests[i].searchElement);
+   for (int i = 0; i < numTests; i++) {
+      int sortedArray[50];
+      for (int j = 0; j < tests[i].size; j++) sortedArray[j] = tests[i].input[j];
+      InsertionSort (sortedArray, tests[i].size);
+      PrintTestCase (i + 1, tests[i].input, sortedArray, tests[i].size, tests[i].searchElement);
+   }
 }
 
 /// <summary>User input for array creation, sorting, and element searching.</summary>
 static void ManualArrayInput () {
    char continueInput = 'y';
-   while (tolower (continueInput) == 'y') {
+   do {
       int arr[50], num;
       char buffer[100];
       printf ("\nEnter the number of elements (maximum length of the array is 50): ");
@@ -109,7 +110,6 @@ static void ManualArrayInput () {
             continue;
          }
       }
-      // Sort the array
       InsertionSort (arr, num);
       printf (GREEN "Sorted array: " RESET);
       DisplayArray (arr, num);
@@ -131,7 +131,7 @@ static void ManualArrayInput () {
       ClearScreen ();
       printf (YELLOW "\nDo you want to input another array? (y/n): " RESET);
       continueInput = tolower (_getch ());
-   }
+   } while (tolower (continueInput) == 'y');
 }
 
 // Main function
