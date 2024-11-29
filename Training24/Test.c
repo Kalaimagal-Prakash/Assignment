@@ -5,10 +5,10 @@
 // Test.c
 // Program on main branch.
 // ------------------------------------------------------------------------------------------------
-#include <stdio.h>
-#include "Header.h"
-
-int main () {
-   printf ("%s\n", GetString ());
-   return 0;
-}
+//#include <stdio.h>
+//#include "Header.h"
+//
+//int main () {
+//   printf ("%s\n", GetString ());
+//   return 0;
+//}
