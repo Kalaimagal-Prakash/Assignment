@@ -4,38 +4,39 @@
 // Kalaimagal V P 
 // ------------------------------------------------------------------------------------------------
 // ComplexNumber.c
-// Program on T1 branch.
+// Program on Test1.1 branch.
 // ------------------------------------------------------------------------------------------------
 #include <math.h>
 #include "ComplexNumber.h"
 
 Complex Op_Add (Complex a, Complex b) {
    Complex add;
-   add.real = a.real + b.real;
-   add.imagine = a.imagine + b.imagine;
+   add.Real = a.Real + b.Real;
+   add.Imagine = a.Imagine + b.Imagine;
    return add;
 }
 
 Complex Op_Sub (Complex a, Complex b) {
    Complex sub;
-   sub.real = a.real - b.real;
-   sub.imagine = a.imagine - b.imagine;
+   sub.Real = a.Real - b.Real;
+   sub.Imagine = a.Imagine - b.Imagine;
    return sub;
 }
 
 Complex Op_Mul (Complex a, Complex b) {
    Complex mul;
-   mul.real = a.real * b.real - a.imagine * b.imagine;
-   mul.imagine = a.real * b.imagine + a.imagine * b.real;
+   mul.Real = a.Real * b.Real - a.Imagine * b.Imagine;
+   mul.Imagine = a.Real * b.Imagine + a.Imagine * b.Real;
    return mul;
 }
 
 float Op_Modulus (Complex x) {
-   return sqrt (x.real * x.real + x.imagine * x.imagine);
+   return sqrt (x.Real * x.Real + x.Imagine * x.Imagine);
 }
+
 Complex Op_Conjugate (Complex a) {
    Complex Conj;
-   Conj.real = a.real;
-   Conj.imagine = -a.imagine;
+   Conj.Real = a.Real;
+   Conj.Imagine = -a.Imagine;
    return Conj;
 }

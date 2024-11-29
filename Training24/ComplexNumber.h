@@ -4,13 +4,13 @@
 // Kalaimagal V P 
 // ------------------------------------------------------------------------------------------------
 // ComplexNumber.h
-// Program on T1 branch.
+// Program on Test1.1 branch.
 // ------------------------------------------------------------------------------------------------
 #ifndef COMPLEX_H
 #define COMPLEX_H
 
 typedef struct {
-   float real,imagine;
+   float Real, Imagine;
 }Complex;
 
 /// <summary>Adds two complex numbers</summary>
