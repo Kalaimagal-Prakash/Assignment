@@ -36,8 +36,8 @@ static void DisplayArray (int arr[], int size) {
 
 /// <summary>Function to check if the array is sorted.</summary>
 static bool IsSorted (int arr[], int size) {
-   for (int i = 1; i < size; i++) if (arr[i - 1] > arr[i]) return false; // Not sorted
-   return true; // Sorted
+   for (int i = 1; i < size; i++) if (arr[i - 1] > arr[i]) return false;
+   return true;
 }
 
 /// <summary>Checks if the input string is a valid integer (digits only).</summary>
@@ -50,24 +50,22 @@ static int IsValidInteger (const char* str) {
 }
 
 /// <summary>Function to format and print test results.</summary>
-static void PrintTestCase (int numTests, int inputs[], int sortedArray[], int size, int searchElement) {
+static void PrintTestCase (int numTests, int inputs[], int sortedArray[], int size, int searchElement, int index) {
    printf (YELLOW "------------------ Test Case %d -------------------\n" RESET, numTests);
    printf ("| Input Array:            ");
    DisplayArray (inputs, size);
    printf ("| Output Array:           ");
    DisplayArray (sortedArray, size);
-   printf ("| Insertion sort : %s\n", IsSorted (sortedArray, size) ? GREEN "PASS" RESET : RED "FAIL" RESET);
-   // Find the element in the sorted array
-   int index = BinarySearch (sortedArray, size, searchElement);
-   if (index >= 0) printf ("Element %d found at sorted index %d.\n", searchElement, index);
-   else printf (RED "Element %d not found.\n" RESET, searchElement);
+   printf ("| Sorting: %s\n", IsSorted (sortedArray, size) ? GREEN "PASS" RESET : RED "FAIL" RESET);
+   if (index >= 0) printf ("Element %d found at sorted index %d.\n", searchElement, index);  // If index >= 0, element was found at that index
+   else printf (RED "Element %d not found.\n" RESET, searchElement);                        // If index == -1, element was not found
    printf ("--------------------------------------------------\n\n");
 }
 
 /// <summary>Tests sorting and searching algorithms with predefined cases.</summary>
 static void TestSort () {
    struct {
-      int input[50], searchElement, size;
+      int Input[50], SearchElement, Size;
    } tests[] = {
        {{34, 7, 23, 32, 10}, 2, 5},          // Search for an element not in the array
        {{5, 3, 8, 1, 2, 6}, 8, 6},
@@ -81,9 +79,10 @@ static void TestSort () {
    int numTests = sizeof (tests) / sizeof (tests[0]);
    for (int i = 0; i < numTests; i++) {
       int sortedArray[50];
-      for (int j = 0; j < tests[i].size; j++) sortedArray[j] = tests[i].input[j];
-      InsertionSort (sortedArray, tests[i].size);
-      PrintTestCase (i + 1, tests[i].input, sortedArray, tests[i].size, tests[i].searchElement);
+      for (int j = 0; j < tests[i].Size; j++) sortedArray[j] = tests[i].Input[j];
+      InsertionSort (sortedArray, tests[i].Size);
+      int index = BinarySearch (sortedArray, tests[i].Size, tests[i].SearchElement);
+      PrintTestCase (i + 1, tests[i].Input, sortedArray, tests[i].Size, tests[i].SearchElement, index);
    }
 }
 
