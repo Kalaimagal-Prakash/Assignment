@@ -7,33 +7,10 @@
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
-
-char board[3][3];
-char player1 = 'X', player2 = 'O';
-int currentPlayer = 1;
-
+#include "Header.h"
 
 void InitializeBoard () {
-   for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-         board[i][j] = '1' + (i * 3 + j);
-      }
-   }
-}
-
-void PrintBoard () {
-   printf ("Tic-Tac-Toe Game\n");
-   for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-         printf (" %c ", board[i][j]);
-         if (j < 2) printf ("|");
-      }
-      printf ("\n");
-      if (i < 2) {
-         printf ("---|---|---\n");
-      }
-   }
-   printf ("\n");
+   for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) board[i][j] = '1' + (i * 3 + j);
 }
 
 int MakeMove (int cell, int player) {
@@ -46,68 +23,46 @@ int MakeMove (int cell, int player) {
    return 0;
 }
 
-int getAvailableMove () {
-   int availableMove[9];
+int AvailableMove () {
+   int availableMove[9] = { 0 };
    int count = 0;
    for (int i = 0; i < 9; i++) {
       int row = i / 3;
       int col = i % 3;
-      if (board[row][col] != 'X' && board[row][col] != 'X') {
+      if (board[row][col] != 'X' && board[row][col] != 'O') {
          availableMove[count++] = i + 1;
       }
    }
    return availableMove[rand () % count];
 }
 
+int ValidMove (int cell) {
+   if (cell < 1 || cell > 9) return 0;
+   int row = (cell - 1) / 3;
+   int col = (cell - 1) % 3;
+   return (board[row][col] != 'X' && board[row][col] != 'O');
+}
 
+int GetWinner () {
+   // Check rows, columns, and diagonals for a win
+   for (int i = 0; i < 3; i++) {
+      if (board[i][0] == board[i][1] && board[i][1] == board[i][2]) return 1;
+      if (board[0][i] == board[1][i] && board[1][i] == board[2][i]) return 1;
+   }
+   if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) return 1;
+   if (board[0][2] == board[1][1] && board[1][1] == board[2][0]) return 1;
+   return 0;
+}
 
 void PlayerMove () {
    int Pmove;
-   printf ("Player %d's turn. Enter the number (1-9):", currentPlayer);
-   scanf_s ("%d", &Pmove);
-   if (validMove (Pmove)) {
-      MakeMove (Pmove, (currentPlayer == 1) ? 'X' : 'O');
-   }
-   else {
-      printf ("Invalid move try again");
-      PlayerMove ();
-   }
-}
-
-void ComputerMove () {
-   int Cmove = getAvaliableMove ();
-   printf ("Computer (O) chooses cell %d\n", Cmove);
-   MakeMove (Cmove, 'O');
-}
-
-int validMove (int cell) {
-   if (cell < 1 || cell > 9) {
-      return 0;  // Invalid move if outside 1-9 range
-   }
-
-   int row = (cell - 1) / 3;
-   int col = (cell - 1) % 3;
-   return (board[row][col] != 'X' && board[row][col] != 'O');  // Check if the cell is empty
-}
-
-
-int main () {
-   srand (time (NULL));
-   InitializeBoard ();
-   PrintBoard ();
-   int winner = 0;
-
    while (1) {
-      //PrintBoard ();
-      if (currentPlayer == 1) {
-         PlayerMove ();
-
+      printf ("Player %d's turn. Enter the number (1-9):", currentPlayer);
+      scanf_s ("%d", &Pmove);
+      if (ValidMove (Pmove)) {
+         MakeMove (Pmove, (currentPlayer == 1) ? 'X' : 'O');
+         break;
       }
-      else if (currentPlayer == 2) {
-         if (player1 == 'X') {
-            ComputerMove ();
-         }
-         else PlayerMove ();
-      }
+      else printf ("Invalid move. Try again.\n");
    }
 }
