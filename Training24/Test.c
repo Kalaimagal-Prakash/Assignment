@@ -50,11 +50,13 @@ static int IsValidInteger (const char* str) {
 }
 
 /// <summary>Function to format and print test results.</summary>
-static void PrintTestCase (int numTests, int inputs[], int sortedArray[], int size, int searchElement, int index) {
+static void PrintTestCase (int numTests, int inputs[], int expected[], int sortedArray[], int size, int searchElement, int index) {
    printf (YELLOW "------------------ Test Case %d -------------------\n" RESET, numTests);
    printf ("| Input Array:            ");
    DisplayArray (inputs, size);
-   printf ("| Output Array:           ");
+   printf ("| Expected Output Array:  ");
+   DisplayArray (expected, size);
+   printf ("| Sorted Output Array:    ");
    DisplayArray (sortedArray, size);
    printf ("| Sorting: %s\n", IsSorted (sortedArray, size) ? GREEN "PASS" RESET : RED "FAIL" RESET);
    if (index >= 0) printf ("Element %d found at sorted index %d.\n", searchElement, index);  // If index >= 0, element was found at that index
@@ -63,18 +65,18 @@ static void PrintTestCase (int numTests, int inputs[], int sortedArray[], int si
 }
 
 /// <summary>Tests sorting and searching algorithms with predefined cases.</summary>
-static void TestSort () {
+static void TestSortAndSearch () {
    struct {
-      int Input[50], SearchElement, Size;
+      int Input[50], Expected[50], SearchElement, Size;
    } tests[] = {
-       {{34, 7, 23, 32, 10}, 2, 5},          // Search for an element not in the array
-       {{5, 3, 8, 1, 2, 6}, 8, 6},
-       {{11, 2}, 11, 2},
-       {{12, 11, 13, 5}, 5, 4},
-       {{-1, -2, -3, -4, -5, -6, -7}, -3, 7},
-       {{99, 3, 14}, 14, 3},
-       {{-10, 0, 5, 2}, 0, 4},
-       {{1, 2, 3, 4, 5}, 6, 5}               // Search for an element not in the array
+       {{34, 7, 23, 32, 10}, {7, 10, 23, 32, 34}, 2, 5},          // Search for an element not in the array
+       {{5, 3, 8, 1, 2, 6}, {1, 2, 3, 5, 6, 8}, 8, 6},
+       {{11, 2}, {2, 11}, 11, 2},
+       {{12, 11, 13, 5}, {5, 11, 12, 13}, 5, 4},
+       {{-1, -2, -3, -4, -5, -6, -7}, {-7, -6, -5, -4, -3, -2, -1}, -3, 7},
+       {{99, 3, 14}, {3, 14, 99}, 14, 3},
+       {{-10, 0, 5, 2}, {-10, 0, 2, 5}, 0, 4},
+       {{1, 2, 3, 4, 5}, {1, 2, 3, 4, 5}, 6, 5}                   // Search for an element not in the array
    };
    int numTests = sizeof (tests) / sizeof (tests[0]);
    for (int i = 0; i < numTests; i++) {
@@ -82,7 +84,14 @@ static void TestSort () {
       for (int j = 0; j < tests[i].Size; j++) sortedArray[j] = tests[i].Input[j];
       InsertionSort (sortedArray, tests[i].Size);
       int index = BinarySearch (sortedArray, tests[i].Size, tests[i].SearchElement);
-      PrintTestCase (i + 1, tests[i].Input, sortedArray, tests[i].Size, tests[i].SearchElement, index);
+      int sortedCorrectly = 1;
+      for (int j = 0; j < tests[i].Size; j++) {
+         if (sortedArray[j] != tests[i].Expected[j]) {
+            sortedCorrectly = 0;
+            break;
+         }
+      }
+      PrintTestCase (i + 1, tests[i].Input, tests[i].Expected, sortedArray, tests[i].Size, tests[i].SearchElement, index);
    }
 }
 
@@ -135,7 +144,7 @@ static void ManualArrayInput () {
 
 // Main function
 int main () {
-   TestSort ();
+   TestSortAndSearch ();
    ManualArrayInput ();
    printf (SKYBLUE "\nExit the Program" RESET);
    return 0;

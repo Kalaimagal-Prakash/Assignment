@@ -13,7 +13,7 @@
 /// <summary>Sorts an array of integers in ascending order using Insertion Sort.</summary>
 void InsertionSort (int arr[], int size);
 
-/// <summary>Performs a binary search for a target value in a sorted array.</summary>
+/// <summary>Performs a binary search on a sorted array and returns the index of the specified element or -1 if not found.</summary>
 int BinarySearch (int arr[], int size, int searchElement);
 
 #endif HEADER_H
