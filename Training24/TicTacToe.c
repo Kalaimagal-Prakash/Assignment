@@ -4,7 +4,7 @@
 // Kalaimagal V P
 // ------------------------------------------------------------------------------------------------
 // Tic-Tac-Toe Game
-// Program on main branch.
+// Program on Test3.2 branch.
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,9 +38,9 @@ int MakeMove (int cell, int player) {
    int col = (cell - 1) % 3;
    if (board[row][col] != 'X' && board[row][col] != 'O') {
       board[row][col] = player;
-      return 1;
+      return 1;               // Return 1 moved to the cell successfully
    }
-   return 0;
+   return 0;                 // Return 0 if the cell is already occupied
 }
 
 /// <summary>Function to find an available move by returning a random unused cell.</summary>
