@@ -4,22 +4,19 @@
 // Kalaimagal V P
 // ------------------------------------------------------------------------------------------------
 // Cash.c
-// Program on Test1.3 branch.
+// Program on Test2.2 branch.
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include "Cash.h"
 
-void CalculateChange (int cashPaid, int actualAmount) {
+void CalculateChange (int cashPaid, int actualAmount, int countCoin[]) {
    int change = cashPaid - actualAmount;
-   int denominations[] = {10, 5, 2, 1};
-   int countCoin[4] = {0, 0, 0, 0};
-
+   int denominations[] = { 10, 5, 2, 1 };
    for (int i = 0; i < 4; i++) {
       countCoin[i] = change / denominations[i];
       change = change % denominations[i];
    }
-   printf ("10 rupee coins to be returned as: %d coins\n", countCoin[0]);
-   printf ("5  rupee coins to be returned as: %d coins\n", countCoin[1]);
-   printf ("2  rupee coins to be returned as: %d coins\n", countCoin[2]);
-   printf ("1  rupee coins to be returned as: %d coins\n", countCoin[3]);
+   printf ("Change to be returned: Rs. %d\n", cashPaid - actualAmount);
+   printf ("No. of Rs.10 coins: %d\nNo. of Rs.5 coins: %d\nNo. of Rs.2 coins: %d\nNo. of Rs.1 coins: %d\n",
+      countCoin[0], countCoin[1], countCoin[2], countCoin[3]);
 }
