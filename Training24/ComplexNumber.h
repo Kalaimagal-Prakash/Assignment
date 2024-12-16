@@ -9,6 +9,11 @@
 #ifndef COMPLEX_H
 #define COMPLEX_H
 
+// ANSI escape codes for colors
+#define RESET   "\033[0m"
+#define GREEN   "\033[32m"
+#define RED     "\033[31m"
+
 typedef struct {
    float Real, Imagine;
 }Complex;
@@ -27,5 +32,8 @@ float Op_Modulus (Complex x);
 
 /// <summary>Find the conjugate of a complex numbers</summary>
 Complex Op_Conjugate (Complex a);
+
+/// <summary>Function to compare two complex numbers.</summary>
+int Op_Equals (Complex a, Complex b);
 
 #endif COMPLEX_H

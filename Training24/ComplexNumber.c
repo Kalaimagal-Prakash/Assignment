@@ -10,24 +10,15 @@
 #include "ComplexNumber.h"
 
 Complex Op_Add (Complex a, Complex b) {
-   Complex add;
-   add.Real = a.Real + b.Real;
-   add.Imagine = a.Imagine + b.Imagine;
-   return add;
+   return (Complex) { a.Real + b.Real, a.Imagine + b.Imagine };
 }
 
 Complex Op_Sub (Complex a, Complex b) {
-   Complex sub;
-   sub.Real = a.Real - b.Real;
-   sub.Imagine = a.Imagine - b.Imagine;
-   return sub;
+   return(Complex) { a.Real - b.Real, a.Imagine - b.Imagine };
 }
 
 Complex Op_Mul (Complex a, Complex b) {
-   Complex mul;
-   mul.Real = a.Real * b.Real - a.Imagine * b.Imagine;
-   mul.Imagine = a.Real * b.Imagine + a.Imagine * b.Real;
-   return mul;
+   return(Complex) { a.Real* b.Real - a.Imagine * b.Imagine, a.Real* b.Imagine + a.Imagine * b.Real };
 }
 
 float Op_Modulus (Complex x) {
@@ -35,8 +26,9 @@ float Op_Modulus (Complex x) {
 }
 
 Complex Op_Conjugate (Complex a) {
-   Complex Conj;
-   Conj.Real = a.Real;
-   Conj.Imagine = -a.Imagine;
-   return Conj;
+   return(Complex) { a.Real, -a.Imagine };
+}
+
+int Op_Equals (Complex a, Complex b) {
+   return a.Real == b.Real && a.Imagine == b.Imagine;
 }
