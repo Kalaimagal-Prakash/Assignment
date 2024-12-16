@@ -26,72 +26,16 @@ typedef enum {
 /* Demo program to implement a Mealy machine.
 *  This machine detects a pattern 0110 or 1101 in an input stream.
 */
-State nextMealyState (State currentState, int input, int* output) {
+static State NextMealyState (State currentState, int input, int* output) {
    switch (currentState) {
-   case S0:
-      if (input == 0) {
-         *output = 0;
-         return S1;  // Transition to S1 after '0' (start of "0110")
-      }
-      else {
-         *output = 0;
-         return P1;  // Transition to P1 after '1' (start of "1101")
-      }
-   case S1:
-      if (input == 1) {
-         *output = 0;
-         return S2;  // Transition to S2 after '01' (start of "0110")
-      }
-      else {
-         *output = 0;
-         return S1;  // Stay in S1 if input is '0'
-      }
-   case S2:
-      if (input == 1) {
-         *output = 0;
-         return S3;  // Transition to S3 after '011' (start of "0110")
-      }
-      else {
-         *output = 0;
-         return S1;  // Return to S1 if input is '0'
-      }
-   case S3:
-      if (input == 0) {
-         *output = 1;
-         return P3;  // Transition to P3 after '011' (start of "0110")
-      }
-      else {
-         *output = 0;
-         return P2;  // Return to P2 if input is '0'
-      }
-   case P1:
-      if (input == 1) {
-         *output = 0;
-         return P2;  // Transition to P2 after '11' (start of "1101")
-      }
-      else {
-         *output = 0;
-         return S1;  // Stay in P1 if input is '0'
-      }
-   case P2:
-      if (input == 0) {
-         *output = 0;
-         return P3;  // Transition to P3 after '110' (start of "1101")
-      }
-      else {
-         *output = 0;
-         return P2;  // Return to P2 if input is '1'
-      }
-   case P3:
-      if (input == 1) {
-         *output = 1;
-         return S2;  // Transition to S2 after '110' (start of "1101")
-      }
-      else {
-         *output = 0;
-         return S1;  // Return to S1 if input is '1'
-      }
-      return S0;  // Default return to initial state
+   case S0: *output = 0; return (input == 0) ? S1 : P1;
+   case S1: *output = 0; return (input == 1) ? S2 : S1;
+   case S2: *output = 0; return (input == 1) ? S3 : S1;
+   case S3: *output = (input == 0) ? 1 : 0; return (input == 0) ? P3 : P2;
+   case P1: *output = 0; return (input == 1) ? P2 : S1;
+   case P2: *output = 0; return (input == 0) ? P3 : P2;
+   case P3: *output = (input == 1) ? 1 : 0; return (input == 1) ? S2 : S1;
+   default: return S0;
    }
 }
 
@@ -100,7 +44,7 @@ static int ProcessFSM (FILE* inputFile, FILE* outputFile) {
    int input;
    int output = 0;
    while ((input = getc (inputFile)) != EOF) {                                 // Read input from the file and process it until the end of file (EOF)
-      currentState = nextMealyState (currentState, input - '0', &output);      // Transition to the next state and calculate the output
+      currentState = NextMealyState (currentState, input - '0', &output);      // Transition to the next state and calculate the output
       fprintf (outputFile, "%d", output);                                      // Write the output value to the output file
    }
    return 0;

@@ -120,8 +120,7 @@ int main (int argc, char** argv) {
       }
       else {
          int result = CompareFiles (outputFiles[i], referenceFiles[i]);
-         if (result == 0) printf ("NO ERROR in this file Test %d PASSED.\n\n", i + 1);
-         else printf ("Test %d FAILED\n\n", i + 1);
+         printf ((result == 0) ? "NO ERROR in this file Test %d PASSED.\n\n" : "Test %d FAILED\n\n", i + 1);
       }
    }
    return 0;
