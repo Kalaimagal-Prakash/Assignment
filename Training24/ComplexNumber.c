@@ -9,26 +9,26 @@
 #include <math.h>
 #include "ComplexNumber.h"
 
-Complex Op_Add (Complex a, Complex b) {
+Complex OpAdd (Complex a, Complex b) {
    return (Complex) { a.Real + b.Real, a.Imagine + b.Imagine };
 }
 
-Complex Op_Sub (Complex a, Complex b) {
+Complex OpSub (Complex a, Complex b) {
    return(Complex) { a.Real - b.Real, a.Imagine - b.Imagine };
 }
 
-Complex Op_Mul (Complex a, Complex b) {
+Complex OpMul (Complex a, Complex b) {
    return(Complex) { a.Real* b.Real - a.Imagine * b.Imagine, a.Real* b.Imagine + a.Imagine * b.Real };
 }
 
-float Op_Modulus (Complex x) {
+float OpModulus (Complex x) {
    return sqrt (x.Real * x.Real + x.Imagine * x.Imagine);
 }
 
-Complex Op_Conjugate (Complex a) {
+Complex OpConjugate (Complex a) {
    return(Complex) { a.Real, -a.Imagine };
 }
 
-int Op_Equals (Complex a, Complex b) {
+int OpEquals (Complex a, Complex b) {
    return a.Real == b.Real && a.Imagine == b.Imagine;
 }

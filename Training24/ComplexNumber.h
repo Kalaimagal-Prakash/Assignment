@@ -19,21 +19,21 @@ typedef struct {
 }Complex;
 
 /// <summary>Adds two complex numbers</summary>
-Complex Op_Add (Complex a, Complex b);
+Complex OpAdd (Complex a, Complex b);
 
 /// <summary>Subtract the one number to another complex numbers</summary>
-Complex Op_Sub (Complex a, Complex b);
+Complex OpSub (Complex a, Complex b);
 
 /// <summary>Multiply the two complex numbers</summary>
-Complex Op_Mul (Complex a, Complex b);
+Complex OpMul (Complex a, Complex b);
 
 /// <summary>Find the Modulus of a complex numbers</summary>
-float Op_Modulus (Complex x);
+float OpModulus (Complex x);
 
 /// <summary>Find the conjugate of a complex numbers</summary>
-Complex Op_Conjugate (Complex a);
+Complex OpConjugate (Complex a);
 
 /// <summary>Function to compare two complex numbers.</summary>
-int Op_Equals (Complex a, Complex b);
+int OpEquals (Complex a, Complex b);
 
 #endif COMPLEX_H
