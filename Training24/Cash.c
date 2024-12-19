@@ -6,7 +6,6 @@
 // Cash.c
 // Program on Test2.2 branch.
 // ------------------------------------------------------------------------------------------------
-#include <stdio.h>
 #include "Cash.h"
 
 void CalculateChange (int cashPaid, int actualAmount, int countCoin[]) {
@@ -16,7 +15,4 @@ void CalculateChange (int cashPaid, int actualAmount, int countCoin[]) {
       countCoin[i] = change / denominations[i];
       change = change % denominations[i];
    }
-   printf ("Change to be returned: Rs. %d\n", cashPaid - actualAmount);
-   printf ("No. of Rs.10 coins: %d\nNo. of Rs.5 coins: %d\nNo. of Rs.2 coins: %d\nNo. of Rs.1 coins: %d\n",
-      countCoin[0], countCoin[1], countCoin[2], countCoin[3]);
 }
