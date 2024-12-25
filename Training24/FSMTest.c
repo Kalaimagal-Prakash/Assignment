@@ -19,7 +19,7 @@
 #include <errhandlingapi.h> 
 #define NTESTS 6
 int ExecProgram (char* exeFilePathAndName, char* inputFilePathAndName, char* outputFilePathAndName);
-int CompareFiles (char* outputFile, char* referenceFile);
+int CompareFiles (char* outputFile, char* referenceFile, int testCaseNumber);
 
 /// <summary>
 /// This function will execute the FSM providing the input and output file names as arguments
@@ -70,22 +70,51 @@ int ExecProgram (char* exeFilePathAndName, char* inputFilePathAndName, char* out
 }
 
 /// <summary> Function to compare two files output and reference.</summary>
-int CompareFiles (char* outputFile, char* referenceFile) {
-   FILE* Output = fopen (outputFile, "r"), * reference = fopen (referenceFile, "r");
-   if (Output == NULL || reference == NULL) {
+int CompareFiles (char* outputFile, char* referenceFile, int testCaseNumber) {
+   FILE* output = fopen (outputFile, "r"), * reference = fopen (referenceFile, "r");
+   if (output == NULL || reference == NULL) {
       printf ("Error opening files.\n");
       return 1;
    }
-   int pos = 0, ch1, ch2;
-   while ((ch1 = fgetc (Output)) != EOF && (ch2 = fgetc (reference)) != EOF) {
-      if (ch1 != ch2) {
-         printf ("Error at bit no. %d, Expected %c, Actual %c\n", pos, ch1, ch2);
-         fclose (Output); fclose (reference);
-         return 1;
-      }
-      pos++;
+   fseek (output, 0, SEEK_END);
+   long outputSize = ftell (output);
+   fseek (output, 0, SEEK_SET);
+   fseek (reference, 0, SEEK_END);
+   long referenceSize = ftell (reference);
+   fseek (reference, 0, SEEK_SET);
+   if (outputSize != referenceSize) {
+      printf ("Files are of different sizes. Test case %d: Expected size: %ld, Actual size: %ld\n", testCaseNumber, referenceSize, outputSize);
+      fclose (output);
+      fclose (reference);
+      return 1;
    }
-   fclose (Output); fclose (reference);
+   char* outputBuffer = (char*)malloc (outputSize);
+   char* referenceBuffer = (char*)malloc (referenceSize);
+   if (outputBuffer == NULL || referenceBuffer == NULL) {
+      printf ("Memory allocation error.\n");
+      fclose (output);
+      fclose (reference);
+      return 1;
+   }
+   fread (outputBuffer, 1, outputSize, output);
+   fread (referenceBuffer, 1, referenceSize, reference);
+   if (memcmp (outputBuffer, referenceBuffer, outputSize) != 0) {
+      for (long i = 0; i < outputSize; i++) {
+         if (outputBuffer[i] != referenceBuffer[i]) {
+            printf ("Error at bit no. %ld, Expected %c, Actual %c\n", i, referenceBuffer[i], outputBuffer[i]);
+            break;
+         }
+      }
+      free (outputBuffer);
+      free (referenceBuffer);
+      fclose (output);
+      fclose (reference);
+      return 1;
+   }
+   free (outputBuffer);
+   free (referenceBuffer);
+   fclose (output);
+   fclose (reference);
    return 0;
 }
 
@@ -101,27 +130,38 @@ int main (int argc, char** argv) {
       return -1;
    }
    printf ("FSM Test Harness\n");
-   // Declare the test files and corresponding file paths
    char* inputFiles[] = {
        "test1input.txt", "test2input.txt", "test3input.txt", "test4input.txt", "test5input.txt", "test6input.txt"
    };
-   char* outputFiles[] = {
-       "test1output.txt", "test2output.txt", "test3output.txt", "test4output.txt", "test5output.txt", "test6output.txt"
-   };
    char* referenceFiles[] = {
-      "test1Ref.txt", "test2Ref.txt", "test3Ref.txt", "test4Ref.txt", "test5Ref.txt", "test6Ref.txt"
+       "test1Ref.txt", "test2Ref.txt", "test3Ref.txt", "test4Ref.txt", "test5Ref.txt", "test6Ref.txt"
    };
-   // Iterate through all test cases
+   char* tempOutputFile = "tempOutput.txt";
+   FILE* tempFile = fopen (tempOutputFile, "w");
+   if (tempFile == NULL) {
+      printf ("Error creating temp output file.\n");
+      return -1;
+   }
+   fclose (tempFile);
    for (int i = 0; i < NTESTS; i++) {
-      // Run the FSM program with input redirection and output redirection
-      if (ExecProgram (argv[1], inputFiles[i], outputFiles[i]) != 0) {
+      // Execute the program with input file and store the output
+      if (ExecProgram (argv[1], inputFiles[i], tempOutputFile) != 0) {
          printf ("Error executing test %d\n", i + 1);
-         continue;  // If execution fails, skip to the next test
+         return -1;
       }
-      else {
-         int result = CompareFiles (outputFiles[i], referenceFiles[i]);
-         printf ((result == 0) ? "NO ERROR in this file Test %d PASSED.\n\n" : "Test %d FAILED\n\n", i + 1);
+      if (CompareFiles (tempOutputFile, referenceFiles[i], i + 1) != 0) {
+         printf ("TEST FAIL at case %d: Output does not match reference\n", i + 1);
+         return -1;
+      }
+      if (i < NTESTS - 1) {
+         tempFile = fopen (tempOutputFile, "a");
+         if (tempFile == NULL) {
+            printf ("Error opening temp output file for appending.\n");
+            return -1;
+         }
+         fclose (tempFile);
       }
    }
+   printf ("All tests passed.\n");
    return 0;
 }

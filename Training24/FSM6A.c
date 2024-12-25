@@ -27,14 +27,15 @@ typedef enum {
 *  This machine detects a pattern 0110 or 1101 in an input stream.
 */
 static State NextMealyState (State currentState, int input, int* output) {
+   *output = 0;
    switch (currentState) {
-   case S0: *output = 0; return (input == 0) ? S1 : P1;
-   case S1: *output = 0; return (input == 1) ? S2 : S1;
-   case S2: *output = 0; return (input == 1) ? S3 : S1;
-   case S3: *output = (input == 0) ? 1 : 0; return (input == 0) ? P3 : P2;
-   case P1: *output = 0; return (input == 1) ? P2 : S1;
-   case P2: *output = 0; return (input == 0) ? P3 : P2;
-   case P3: *output = (input == 1) ? 1 : 0; return (input == 1) ? S2 : S1;
+   case S0: return (input == 0) ? S1 : P1;
+   case S1: return (input == 1) ? S2 : S1;
+   case S2: return (input == 1) ? S3 : S1;
+   case S3: *output = !input; return (input == 0) ? P3 : P2;
+   case P1: return (input == 1) ? P2 : S1;
+   case P2: return (input == 0) ? P3 : P2;
+   case P3: *output = input; return (input == 1) ? S2 : S1;
    default: return S0;
    }
 }
@@ -62,11 +63,9 @@ int main (int argc, char* argv[]) {
       printf ("Error opening files.\n");
       return -2;
    }
-   // Run the FSM function
    int result = ProcessFSM (inputFile, outputFile);
    if (result == 0) printf ("FSM process completed Output is saved in %s\n", argv[2]);
    else printf ("FSM processing failed.\n");
-   // Close the files
    fclose (outputFile);
    fclose (inputFile);
    return 0;
