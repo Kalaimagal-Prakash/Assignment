@@ -17,7 +17,6 @@
 #include <processthreadsapi.h> 
 #include <handleapi.h> 
 #include <errhandlingapi.h> 
-#define NTESTS 6
 int ExecProgram (char* exeFilePathAndName, char* inputFilePathAndName, char* outputFilePathAndName);
 int CompareFiles (char* outputFile, char* referenceFile, int testCaseNumber);
 
@@ -69,6 +68,13 @@ int ExecProgram (char* exeFilePathAndName, char* inputFilePathAndName, char* out
    return 0;
 }
 
+void Clean (FILE* output, FILE* reference, char* outputBuffer, char* referenceBuffer) {
+   if (output) fclose (output);
+   if (reference) fclose (reference);
+   if (outputBuffer) free (outputBuffer);
+   if (referenceBuffer) free (referenceBuffer);
+}
+
 /// <summary> Function to compare two files output and reference.</summary>
 int CompareFiles (char* outputFile, char* referenceFile, int testCaseNumber) {
    FILE* output = fopen (outputFile, "r"), * reference = fopen (referenceFile, "r");
@@ -83,18 +89,14 @@ int CompareFiles (char* outputFile, char* referenceFile, int testCaseNumber) {
    long referenceSize = ftell (reference);
    fseek (reference, 0, SEEK_SET);
    if (outputSize != referenceSize) {
-      printf ("Files are of different sizes. Test case %d: Expected size: %ld, Actual size: %ld\n", testCaseNumber, referenceSize, outputSize);
-      fclose (output);
-      fclose (reference);
+      printf (" Test case %d Fail\n", testCaseNumber);
       return 1;
    }
    char* outputBuffer = (char*)malloc (outputSize);
    char* referenceBuffer = (char*)malloc (referenceSize);
    if (outputBuffer == NULL || referenceBuffer == NULL) {
       printf ("Memory allocation error.\n");
-      fclose (output);
-      fclose (reference);
-      return 1;
+      return -1;
    }
    fread (outputBuffer, 1, outputSize, output);
    fread (referenceBuffer, 1, referenceSize, reference);
@@ -105,16 +107,10 @@ int CompareFiles (char* outputFile, char* referenceFile, int testCaseNumber) {
             break;
          }
       }
-      free (outputBuffer);
-      free (referenceBuffer);
-      fclose (output);
-      fclose (reference);
+      Clean (output, reference, outputBuffer, referenceBuffer);
       return 1;
    }
-   free (outputBuffer);
-   free (referenceBuffer);
-   fclose (output);
-   fclose (reference);
+   Clean (output, reference, outputBuffer, referenceBuffer);
    return 0;
 }
 
@@ -131,10 +127,10 @@ int main (int argc, char** argv) {
    }
    printf ("FSM Test Harness\n");
    char* inputFiles[] = {
-       "test1input.txt", "test2input.txt", "test3input.txt", "test4input.txt", "test5input.txt", "test6input.txt"
+       "TData/test1input.txt", "TData/test2input.txt", "TData/test3input.txt", "TData/test4input.txt", "TData/test5input.txt", "TData/test6input.txt"
    };
    char* referenceFiles[] = {
-       "test1Ref.txt", "test2Ref.txt", "test3Ref.txt", "test4Ref.txt", "test5Ref.txt", "test6Ref.txt"
+       "TData/test1Ref.txt", "TData/test2Ref.txt", "TData/test3Ref.txt", "TData/test4Ref.txt", "TData/test5Ref.txt", "TData/test6Ref.txt"
    };
    char* tempOutputFile = "tempOutput.txt";
    FILE* tempFile = fopen (tempOutputFile, "w");
@@ -142,8 +138,8 @@ int main (int argc, char** argv) {
       printf ("Error creating temp output file.\n");
       return -1;
    }
-   fclose (tempFile);
-   for (int i = 0; i < NTESTS; i++) {
+   int numTests = sizeof (inputFiles) / sizeof (inputFiles[0]);
+   for (int i = 0; i < numTests; i++) {
       // Execute the program with input file and store the output
       if (ExecProgram (argv[1], inputFiles[i], tempOutputFile) != 0) {
          printf ("Error executing test %d\n", i + 1);
@@ -153,15 +149,8 @@ int main (int argc, char** argv) {
          printf ("TEST FAIL at case %d: Output does not match reference\n", i + 1);
          return -1;
       }
-      if (i < NTESTS - 1) {
-         tempFile = fopen (tempOutputFile, "a");
-         if (tempFile == NULL) {
-            printf ("Error opening temp output file for appending.\n");
-            return -1;
-         }
-         fclose (tempFile);
-      }
    }
+   fclose (tempFile);
    printf ("All tests passed.\n");
    return 0;
 }

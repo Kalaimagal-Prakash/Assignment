@@ -10,6 +10,7 @@
 // ------------------------------------------------------------------------------------------------
 #define _CRT_SECURE_NO_WARNINGS  1
 #include <stdio.h>
+#include <malloc.h>
 
 /// See File: // FSMDiagram.png
 /// <summary>Define states of the Mealy machine.</summary>
@@ -23,9 +24,7 @@ typedef enum {
    P3,  // After '110'
 } State;
 
-/* Demo program to implement a Mealy machine.
-*  This machine detects a pattern 0110 or 1101 in an input stream.
-*/
+/// <summary>Mealy machine program that detects patterns "0110" or "1101" in a bitstream.</summary>
 static State NextMealyState (State currentState, int input, int* output) {
    *output = 0;
    switch (currentState) {
@@ -41,19 +40,29 @@ static State NextMealyState (State currentState, int input, int* output) {
 }
 
 static int ProcessFSM (FILE* inputFile, FILE* outputFile) {
-   State currentState = S0;  // Start in the initial state
-   int input;
-   int output = 0;
-   while ((input = getc (inputFile)) != EOF) {                                 // Read input from the file and process it until the end of file (EOF)
-      currentState = NextMealyState (currentState, input - '0', &output);      // Transition to the next state and calculate the output
-      fprintf (outputFile, "%d", output);                                      // Write the output value to the output file
+   fseek (inputFile, 0, SEEK_END);
+   long fileSize = ftell (inputFile); 
+   fseek (inputFile, 0, SEEK_SET);
+   char* inputBuffer = (char*)malloc (fileSize);
+   if (inputBuffer == NULL) {
+      printf ("Memory allocation error.\n");
+      return -1;
    }
+   fread (inputBuffer, 1, fileSize, inputFile);
+   State currentState = S0;
+   int output = 0;
+   for (long i = 0; i < fileSize; i++) {
+      int input = inputBuffer[i] - '0';
+      currentState = NextMealyState (currentState, input, &output);
+      fprintf (outputFile, "%d", output);
+   }
+   free (inputBuffer);
    return 0;
 }
 
 int main (int argc, char* argv[]) {
    // Check if the correct number of arguments are passed
-   if (argc < 3) {
+   if (argc != 3) {
       printf ("Usage: <FSM Executable> <testin.txt> <testout.txt>\n");
       return -1;
    }
