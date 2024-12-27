@@ -79,7 +79,7 @@ int main () {
          return -1;
       }
       int result = FileCompare (ref, output);
-     (result == 0) ? wprintf (GREEN L"Files match! TEST PASSED\n" RESET) : wprintf (RED L"TEST FAILED\n" RESET);
+      (result == 0) ? wprintf (GREEN L"Files match! TEST PASSED\n" RESET) : wprintf (RED L"TEST FAILED\n" RESET);
       fclose (output);
       fclose (ref);
    }
