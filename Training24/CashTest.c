@@ -14,20 +14,25 @@
 #define True 1
 #define False 0
 
-void ClearScreen () {
+static void ClearScreen () {
 #ifdef _WIN32
    system ("cls");
 #endif
 }
 
-void PrintChange (int cashPaid, int actualAmount, int countCoin[]) {
-   printf ("Change to be returned: Rs. %d\n", cashPaid - actualAmount);
+static void PrintChange (int cashPaid, int actualAmount, int* countCoin) {
+   int change = cashPaid - actualAmount;
+   if (change == 0) {
+      printf ("No change to be returned.\n");
+      return;
+   }
+   printf ("Change to be returned: Rs. %d\n", change);
    printf ("No. of Rs.10 coins: %d\nNo. of Rs.5 coins: %d\nNo. of Rs.2 coins: %d\nNo. of Rs.1 coins: %d\n",
       countCoin[0], countCoin[1], countCoin[2], countCoin[3]);
 }
 
 /// <summary>Function to run test cases and verify the output of CalculateChange.</summary>
-void TestCases () {
+static void TestCases () {
    int cashPaid[] = { 28, 56, 90, 100, 5, 50, 120, 200 };
    int actualAmount[] = { 30, 37, 40, 83, 5, 33, 50, 200 };
    int expectedCoinCount[8][4] = {
@@ -52,8 +57,8 @@ void TestCases () {
          printf (GREEN "No change to be returned. Test Passed.\n" RESET);
          continue;
       }
-      int actualCoinCount[4] = { 0, 0, 0, 0 };
-      CalculateChange (cashPaid[i], actualAmount[i], actualCoinCount);
+      int* actualCoinCount = CalculateChange (cashPaid[i], actualAmount[i]);
+      if (actualCoinCount == NULL) continue;
       PrintChange (cashPaid[i], actualAmount[i], actualCoinCount);
       int pass = 1;
       for (int j = 0; j < 4; j++) {
@@ -74,13 +79,11 @@ int UserInput () {
    scanf_s ("%d", &cashPaid);
    printf ("Enter the actual amount: ");
    scanf_s ("%d", &actualAmount);
-   while (getchar () != '\n');
    if (cashPaid < actualAmount) {
       printf (RED "Cash paid is less than the actual amount!\n" RESET);
       return 1;
-   }
-   int actualCoinCount[4] = { 0, 0, 0, 0 };
-   CalculateChange (cashPaid, actualAmount, actualCoinCount);
+   }   int* actualCoinCount = CalculateChange (cashPaid, actualAmount);
+   if (actualCoinCount == NULL) return 1;
    PrintChange (cashPaid, actualAmount, actualCoinCount);
    char choice;
    printf ("Would you like to enter another transaction? (y/n): ");

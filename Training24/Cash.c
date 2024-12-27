@@ -8,11 +8,13 @@
 // ------------------------------------------------------------------------------------------------
 #include "Cash.h"
 
-void CalculateChange (int cashPaid, int actualAmount, int countCoin[]) {
+int* CalculateChange (int cashPaid, int actualAmount) {
    int change = cashPaid - actualAmount;
    int denominations[] = { 10, 5, 2, 1 };
+   static int countCoin[4];
    for (int i = 0; i < 4; i++) {
       countCoin[i] = change / denominations[i];
       change = change % denominations[i];
    }
+   return countCoin;
 }
