@@ -9,29 +9,19 @@
 #include <stdio.h>
 
 wchar_t GetPiece (int row, int col) {
-   if (row == 0) {  // Black pieces (first row)
-      switch (col) {
-      case 0: case 7: return L'\u265C';  // Black Rook
-      case 1: case 6: return L'\u265E';  // Black Knight
-      case 2: case 5: return L'\u265D';  // Black Bishop
-      case 3: return L'\u265B';          // Black Queen
-      case 4: return L'\u265A';          // Black King
-      default: return L' ';              // Empty (shouldn't happen)
-      }
-   }
-   else if (row == 1) return L'\u265F';  // Black Pawn
-   else if (row == 6) return L'\u2659';  // White Pawn
-   else if (row == 7) {                  // White pieces (last row)
-      switch (col) {
-      case 0: case 7: return L'\u2656';  // White Rook
-      case 1: case 6: return L'\u2658';  // White Knight
-      case 2: case 5: return L'\u2657';  // White Bishop
-      case 3: return L'\u2655';          // White Queen
-      case 4: return L'\u2654';          // White King
-      default: return L' ';              // Empty (shouldn't happen)
-      }
-   }
-   return L' '; // Empty square for all other rows
+   wchar_t pieces[8][8] = {
+       {L'\u265C', L'\u265E', L'\u265D', L'\u265B', L'\u265A', L'\u265D', L'\u265E', L'\u265C'},  // Black pieces (row 0)
+       {L'\u265F', L'\u265F', L'\u265F', L'\u265F', L'\u265F', L'\u265F', L'\u265F', L'\u265F'},  // Black pawns (row 1)
+       {L' ', L' ', L' ', L' ', L' ', L' ', L' ', L' '},
+       {L' ', L' ', L' ', L' ', L' ', L' ', L' ', L' '},
+       {L' ', L' ', L' ', L' ', L' ', L' ', L' ', L' '},
+       {L' ', L' ', L' ', L' ', L' ', L' ', L' ', L' '},
+       {L'\u2659', L'\u2659', L'\u2659', L'\u2659', L'\u2659', L'\u2659', L'\u2659', L'\u2659'},  // White pawns (row 6)
+       {L'\u2656', L'\u2658', L'\u2657', L'\u2655', L'\u2654', L'\u2657', L'\u2658', L'\u2656'}   // White pieces (row 7)
+   };
+   if (row < 0 || row >= 8) return L' ';
+   if (col < 0 || col >= 8) return L' ';
+   return pieces[row][col];
 }
 
 void PrintChessboard (FILE* fp) {

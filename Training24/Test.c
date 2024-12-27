@@ -6,13 +6,14 @@
 // Test.c
 // Program on A6 branch.
 // ------------------------------------------------------------------------------------------------
-_CRT_SECURE_NO_WARNINGS;
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <corecrt.h>
 #include <io.h>
 #include <fcntl.h>
 #include <conio.h>
 #include <ctype.h>
+#include <malloc.h>
 
 // ANSI escape codes for colors
 #define RESET   "\033[0m"
@@ -23,28 +24,30 @@ _CRT_SECURE_NO_WARNINGS;
 // External declarations for functions
 extern void PrintChessboard (FILE* output);
 
-///<summary>Compares two files character by character and returns the result of the comparison.</summary>
-static int FileCompare (FILE* ref, FILE* output, int* row, int* col) {
-   wchar_t refChar = getwc (ref);
-   wchar_t outChar = getwc (output);
-   *row = 1;
-   *col = 0;
-   // Loop through both files character by character
-   while (refChar != WEOF && outChar != WEOF) {
-      *col += 1;
-      if (refChar != outChar) return -3;  // Mismatch found
-      // If newline is encountered, move to the next row
-      if (refChar == L'\n') {
-         *row += 1;
-         *col = 0;
+///<summary>Compares two files at once and returns the result of the comparison.</summary>
+static int FileCompare (FILE* ref, FILE* output) {
+   fseek (ref, 0, SEEK_END);
+   long refSize = ftell (ref), outSize;
+   fseek (output, 0, SEEK_END);
+   outSize = ftell (output);
+   fseek (ref, 0, SEEK_SET);
+   fseek (output, 0, SEEK_SET);
+   wchar_t* refBuffer = malloc (refSize);
+   wchar_t* outBuffer = malloc (outSize);
+   if (!refBuffer || !outBuffer) return -1;
+   fread (refBuffer, 1, refSize, ref);
+   fread (outBuffer, 1, outSize, output);
+   long minSize = (refSize < outSize) ? refSize : outSize;
+   for (long i = 0; i < minSize / sizeof (wchar_t); i++) {
+      if (refBuffer[i] != outBuffer[i]) {
+         free (refBuffer);
+         free (outBuffer);
+         return -3;  // Mismatch
       }
-      // Get the next character from both files
-      refChar = getwc (ref);
-      outChar = getwc (output);
    }
-   // To check if both files reached EOF at the same time
-   if (refChar != outChar) return refChar != WEOF ? -1 : -2;
-   return 0;  // Files match
+   free (refBuffer);
+   free (outBuffer);
+   return (refSize == outSize) ? 0 : -2;  // Size mismatch
 }
 
 int main () {
@@ -75,15 +78,8 @@ int main () {
          fclose (output);
          return -1;
       }
-      // Initialize row and column to track the position in the files
-      int row = 1, col = 0;
-      int result = FileCompare (ref, output, &row, &col);
-      switch (result) {
-      case 0: wprintf (GREEN L"Files match! TEST PASSED\n" RESET); break;
-      case -1: case -3: wprintf (RED L"Files mismatch! Error at row %d, col %d.\n" RESET, row, col); break;
-      case -2: wprintf (YELLOW L"One file ended early! Error at row %d, col %d.\n" RESET, row, col); break;
-      default: wprintf (YELLOW L"Unknown error at row %d, col %d.\n" RESET, row, col); break;
-      }
+      int result = FileCompare (ref, output);
+     (result == 0) ? wprintf (GREEN L"Files match! TEST PASSED\n" RESET) : wprintf (RED L"TEST FAILED\n" RESET);
       fclose (output);
       fclose (ref);
    }
