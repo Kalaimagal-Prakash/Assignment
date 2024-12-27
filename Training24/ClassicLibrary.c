@@ -9,15 +9,18 @@
 #include <stdio.h>
 
 wchar_t GetPiece (int row, int col) {
-   wchar_t pieces[2][8] = {
+   wchar_t black[2][8] = {
        {L'\u265C', L'\u265E', L'\u265D', L'\u265B', L'\u265A', L'\u265D', L'\u265E', L'\u265C'},  // Black pieces
-       {L'\u2656', L'\u2658', L'\u2657', L'\u2655', L'\u2654', L'\u2657', L'\u2658', L'\u2656'}   // White pieces
+       {L'\u265F'}  // Black pawns
    };
-   wchar_t pawns[2] = { L'\u265F', L'\u2659' };  // Black pawn, White pawn
-   if (row == 0) return pieces[0][col];          // Black back rank pieces
-   if (row == 1) return pawns[0];                // Black pawns
-   if (row == 6) return pawns[1];                // White pawns
-   if (row == 7) return pieces[1][col];          // White back rank pieces
+   wchar_t white[2][8] = {
+       {L'\u2656', L'\u2658', L'\u2657', L'\u2655', L'\u2654', L'\u2657', L'\u2658', L'\u2656'},  // White pieces
+       {L'\u2659'}  // White pawns
+   };
+   if (row == 0) return black[0][col];
+   if (row == 1) return black[1][0];
+   if (row == 6) return white[1][0];
+   if (row == 7) return white[0][col];
    return L' ';
 }
 
