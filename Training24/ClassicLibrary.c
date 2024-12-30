@@ -9,18 +9,30 @@
 #include <stdio.h>
 
 wchar_t GetPiece (int row, int col) {
-   wchar_t black[2][8] = {
-       {L'\u265C', L'\u265E', L'\u265D', L'\u265B', L'\u265A', L'\u265D', L'\u265E', L'\u265C'},  // Black pieces
-       {L'\u265F'}  // Black pawns
+   wchar_t blackPieces[] = {
+       L'\u265C', // Black rook
+       L'\u265E', // Black knight
+       L'\u265D', // Black bishop
+       L'\u265B', // Black queen
+       L'\u265A', // Black king
+       L'\u265D', // Black bishop
+       L'\u265E', // Black knight
+       L'\u265C'  // Black rook
    };
-   wchar_t white[2][8] = {
-       {L'\u2656', L'\u2658', L'\u2657', L'\u2655', L'\u2654', L'\u2657', L'\u2658', L'\u2656'},  // White pieces
-       {L'\u2659'}  // White pawns
+   wchar_t whitePieces[] = {
+       L'\u2656', // White rook
+       L'\u2658', // White knight
+       L'\u2657', // White bishop
+       L'\u2655', // White queen
+       L'\u2654', // White king
+       L'\u2657', // White bishop
+       L'\u2658', // White knight
+       L'\u2656'  // White rook
    };
-   if (row == 0) return black[0][col];
-   if (row == 1) return black[1][0];
-   if (row == 6) return white[1][0];
-   if (row == 7) return white[0][col];
+   if (row == 0) return blackPieces[col];
+   if (row == 1) return L'\u265F';
+   if (row == 6) return L'\u2659';
+   if (row == 7) return whitePieces[col];
    return L' ';
 }
 
