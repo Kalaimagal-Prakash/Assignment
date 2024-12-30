@@ -15,9 +15,7 @@ wchar_t GetPiece (int row, int col) {
        L'\u265D', // Black bishop
        L'\u265B', // Black queen
        L'\u265A', // Black king
-       L'\u265D', // Black bishop
-       L'\u265E', // Black knight
-       L'\u265C'  // Black rook
+       L'\u265F'  // Black pawn
    };
    wchar_t whitePieces[] = {
        L'\u2656', // White rook
@@ -25,14 +23,24 @@ wchar_t GetPiece (int row, int col) {
        L'\u2657', // White bishop
        L'\u2655', // White queen
        L'\u2654', // White king
-       L'\u2657', // White bishop
-       L'\u2658', // White knight
-       L'\u2656'  // White rook
+       L'\u2659'  // White pawn
    };
-   if (row == 0) return blackPieces[col];
-   if (row == 1) return L'\u265F';
-   if (row == 6) return L'\u2659';
-   if (row == 7) return whitePieces[col];
+   if (row == 0) {
+      if (col == 0 || col == 7) return blackPieces[0];
+      if (col == 1 || col == 6) return blackPieces[1];
+      if (col == 2 || col == 5) return blackPieces[2];
+      if (col == 3) return blackPieces[3];
+      if (col == 4) return blackPieces[4];
+   }
+   if (row == 1) return blackPieces[5];
+   if (row == 6) return whitePieces[5];
+   if (row == 7) {
+      if (col == 0 || col == 7) return whitePieces[0];
+      if (col == 1 || col == 6) return whitePieces[1];
+      if (col == 2 || col == 5) return whitePieces[2];
+      if (col == 3) return whitePieces[3];
+      if (col == 4) return whitePieces[4];
+   }
    return L' ';
 }
 
