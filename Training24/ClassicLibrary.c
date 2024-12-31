@@ -25,23 +25,12 @@ wchar_t GetPiece (int row, int col) {
        L'\u2654', // White king
        L'\u2659'  // White pawn
    };
-   if (row == 0) {
-      if (col == 0 || col == 7) return blackPieces[0];
-      if (col == 1 || col == 6) return blackPieces[1];
-      if (col == 2 || col == 5) return blackPieces[2];
-      if (col == 3) return blackPieces[3];
-      if (col == 4) return blackPieces[4];
-   }
-   if (row == 1) return blackPieces[5];
-   if (row == 6) return whitePieces[5];
-   if (row == 7) {
-      if (col == 0 || col == 7) return whitePieces[0];
-      if (col == 1 || col == 6) return whitePieces[1];
-      if (col == 2 || col == 5) return whitePieces[2];
-      if (col == 3) return whitePieces[3];
-      if (col == 4) return whitePieces[4];
-   }
-   return L' ';
+   return (row == 0) ? (col == 0 || col == 7) ? blackPieces[0] : (col == 1 || col == 6) ? blackPieces[1] :
+      (col == 2 || col == 5) ? blackPieces[2] : (col == 3) ? blackPieces[3] : (col == 4) ? blackPieces[4] : L' ' :
+      (row == 1) ? blackPieces[5] : (row == 6) ? whitePieces[5] :
+      (row == 7) ? (col == 0 || col == 7) ? whitePieces[0] : (col == 1 || col == 6) ? whitePieces[1] :
+      (col == 2 || col == 5) ? whitePieces[2] : (col == 3) ? whitePieces[3] : (col == 4) ? whitePieces[4] : L' ' :
+      L' ';
 }
 
 void PrintChessboard (FILE* fp) {
