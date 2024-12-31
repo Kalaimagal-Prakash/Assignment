@@ -98,11 +98,11 @@ static void UserInput () {
    }
    printf ("\nComplex Number 1: %.2f + %.2fi\n", a.Real, a.Imagine);
    printf ("Complex Number 2: %.2f + %.2fi\n\n", b.Real, b.Imagine);
-   TestAddition (a, b, OpAdd (a, b), 1);
-   TestSubtraction (a, b, OpSub (a, b), 2);
-   TestMultiplication (a, b, OpMul (a, b), 3);
-   TestConjugate (a, OpConjugate (a), 5);
-   TestModulus (a, OpModulus (a), 4);
+   TestAddition (a, b, OpAdd (a, b));
+   TestSubtraction (a, b, OpSub (a, b));
+   TestMultiplication (a, b, OpMul (a, b));
+   TestConjugate (a, OpConjugate (a));
+   TestModulus (a, OpModulus (a));
 }
 
 int main () {
