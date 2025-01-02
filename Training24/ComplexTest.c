@@ -35,58 +35,68 @@ bool GetComplex (Complex* c, const char* message) {
 /// <summary>Function for Addition Test Case.</summary>
 static void TestAddition (Complex a, Complex b, Complex expectedAdd) {
    Complex sum = OpAdd (a, b);
-   printf ("Addition            : %.2f + %.2fi  -> ", expectedAdd.Real, expectedAdd.Imagine);
+   printf ("Addition        : %.2f + %.2fi  -> ", expectedAdd.Real, expectedAdd.Imagine);
    printf (OpEquals (sum, expectedAdd) ? GREEN "Passed\n" RESET : RED "Failed\n" RESET);
 }
 
 /// <summary>Function for Subtraction Test Case.</summary>
 static void TestSubtraction (Complex a, Complex b, Complex expectedSub) {
    Complex sum = OpSub (a, b);
-   printf ("Subtraction         : %.2f + %.2fi  -> ", expectedSub.Real, expectedSub.Imagine);
+   printf ("Subtraction     : %.2f + %.2fi  -> ", expectedSub.Real, expectedSub.Imagine);
    printf (OpEquals (sum, expectedSub) ? GREEN "Passed\n" RESET : RED "Failed\n" RESET);
 }
 
 /// <summary>Function for Multiplication Test Case.</summary>
 static void TestMultiplication (Complex a, Complex b, Complex expectedMul) {
    Complex sum = OpMul (a, b);
-   printf ("Multiplication      : %.2f + %.2fi  -> ", expectedMul.Real, expectedMul.Imagine);
+   printf ("Multiplication  : %.2f + %.2fi  -> ", expectedMul.Real, expectedMul.Imagine);
    printf (OpEquals (sum, expectedMul) ? GREEN "Passed\n" RESET : RED "Failed\n" RESET);
 }
 
 /// <summary>Function for Conjugate Test Case.</summary>
-static void TestConjugate (Complex a, Complex expectedConjA) {
+static void TestConjugate (Complex a, Complex b, Complex expectedConjA, Complex expectedConjB) {
    Complex conjA = OpConjugate (a);
-   printf ("Conjugate           : %.2f + %.2fi  -> ", expectedConjA.Real, expectedConjA.Imagine);
+   printf ("Conjugate(a)    : %.2f + %.2fi  -> ", expectedConjA.Real, expectedConjA.Imagine);
    printf (OpEquals (conjA, expectedConjA) ? GREEN "Passed\n" RESET : RED "Failed\n" RESET);
+   Complex conjB = OpConjugate (b);
+   printf ("Conjugate(b)    : %.2f + %.2fi  -> ", expectedConjB.Real, expectedConjB.Imagine);
+   printf (OpEquals (conjB, expectedConjB) ? GREEN "Passed\n" RESET : RED "Failed\n" RESET);
 }
 
 /// <summary>Function for Modulus Test Case.</summary>
-static void TestModulus (Complex a, float expectedModA) {
+static void TestModulus (Complex a, Complex b, float expectedModA, float expectedModB) {
    float modulusA = OpModulus (a);
-   printf ("Modulus             : %.2f  -> ", expectedModA);
+   printf ("Modulus(a)      : %.2f  -> ", expectedModA);
    printf (fabs (modulusA - expectedModA) < EPSILON ? GREEN "Passed\n" RESET : RED "Failed\n" RESET);
+   float modulusB = OpModulus (b);
+   printf ("Modulus(b)      : %.2f  -> ", expectedModB);
+   printf (fabs (modulusB - expectedModB) < EPSILON ? GREEN "Passed\n" RESET : RED "Failed\n" RESET);
 }
 
 /// <summary>Function to execute the test cases automatically.</summary>
 static void TestCases () {
-   Complex testCases[3] = { {1, 2}, {-3, 4}, {5, -6} };
-   Complex expectedSum[3] = { {-2, 6}, {2, -2}, {6, -4} }, expectedSub[3] = { {4, -2}, {-8, 10}, {4, -8} },
-      expectedMul[3] = { {-11, -2}, {9, 38}, {17, 4} }, expectedConj[3] = { {1, -2}, {-3, -4}, {5, 6} };
-   float expectedMod[3] = { 2.2361f, 5.0f, 7.8102f };
-   for (int i = 0; i < 3; i++) {
+   Complex testCases[6] = { {1, 2}, {-3, 4}, {5, -6}, {7, 1}, {0, -5}, {-9, 3} },
+      expectedSum[6] = { {-2, 6}, {2, -2}, {12, -5}, {7, -4}, {-9, -2}, {-8, 5} },
+      expectedSub[6] = { {4, -2}, {-8, 10}, {-2, -7}, {7, 6}, {9, -8}, {-10, 1} },
+      expectedMul[6] = { {-11, -2}, {9, 38}, {41, -37}, {5, -35}, {15, 45}, {-15, -15} },
+      expectedConj[6] = { {1, -2},{-3, -4}, {5, 6}, {7, -1}, {0, 5}, {-9, -3} };
+   float expectedMod[6] = {
+       2.2361f, 5.0f, 7.8102f, 7.0711f, 5.0f, 9.4868f
+   };
+   for (int i = 0; i < 6; i++) {
       printf (YELLOW "\nTest %d:\n" RESET, i + 1);
-      TestAddition (testCases[i], testCases[(i + 1) % 3], expectedSum[i]);
-      TestSubtraction (testCases[i], testCases[(i + 1) % 3], expectedSub[i]);
-      TestMultiplication (testCases[i], testCases[(i + 1) % 3], expectedMul[i]);
-      TestConjugate (testCases[i], expectedConj[i]);
-      TestModulus (testCases[i], expectedMod[i]);
+      TestAddition (testCases[i], testCases[(i + 1) % 6], expectedSum[i]);
+      TestSubtraction (testCases[i], testCases[(i + 1) % 6], expectedSub[i]);
+      TestMultiplication (testCases[i], testCases[(i + 1) % 6], expectedMul[i]);
+      TestConjugate (testCases[i], testCases[(i + 1) % 6], expectedConj[i], expectedConj[(i + 1) % 6]);
+      TestModulus (testCases[i], testCases[(i + 1) % 6], expectedMod[i], expectedMod[(i + 1) % 6]);
    }
 }
 
 /// <summary> Function for user-defined operations.</summary>
 static void UserInput () {
    Complex a, b;
-   printf ("Enter the first complex number (real and imaginary part):\n");
+   printf ("\nEnter the first complex number (real and imaginary part):\n");
    if (!GetComplex (&a, "Complex number 1: ")) {
       printf ("Invalid input. Exiting program.\n");
       return;
@@ -101,31 +111,28 @@ static void UserInput () {
    TestAddition (a, b, OpAdd (a, b));
    TestSubtraction (a, b, OpSub (a, b));
    TestMultiplication (a, b, OpMul (a, b));
-   TestConjugate (a, OpConjugate (a));
-   TestModulus (a, OpModulus (a));
+   TestConjugate (a, b, OpConjugate (a), OpConjugate (b));
+   TestModulus (a, b, OpModulus (a), OpModulus (b));
 }
 
 int main () {
    int choice, continueTesting = 1;
    do {
-      printf ("\n1. Run Test Cases\n");
-      printf ("2. Enter User Input\n");
-      printf ("3. Exit\n");
-      printf ("Enter your choice: ");
-      choice = _getch ();
-      ClearScreen ();
+      printf ("\n1. Run Test Cases\n2. Enter User Input\n3. Exit\nEnter your choice: ");
+      choice = _getche ();
       switch (choice) {
       case '1': TestCases (); break;
       case '2': UserInput (); break;
-      case '3': printf (YELLOW "Exiting the program.\n" RESET); exit (0); break;
+      case '3': printf (YELLOW "\nExiting the program.\n" RESET); exit (0); break;
       default: printf ("Invalid choice. Please try again.\n"); break;
       }
       if (continueTesting) {
          printf ("\nDo you want to run the program? (y/n): ");
-         choice = _getch ();
+         choice = _getche ();
+         ClearScreen ();
          if (choice == 'n' || choice == 'N') continueTesting = 0;
       }
    } while (continueTesting);
-   printf (YELLOW "Exiting the program.\n" RESET);
+   printf (YELLOW "\nExiting the program.\n" RESET);
    return 0;
 }
