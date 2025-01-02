@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClassicLibrary.c" />
-    <ClCompile Include="Test.c" />
+    <ClCompile Include="ComplexNumber.c" />
+    <ClCompile Include="ComplexTest.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="ComplexNumber.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
