@@ -34,26 +34,25 @@ wchar_t GetPiece (int row, int col) {
 }
 
 void PrintChessboard (FILE* fp) {
-   // Print the top border
-   wprintf (L"┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓\n");
-   fwprintf (fp, L"┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓\n");
+   const wchar_t* topBorder = L"┏━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┓",
+      * rowSeparator = L"┣━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━┫",
+      * bottomBorder = L"┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛";
+   fwprintf (fp, L"%s\n", topBorder);                            // Print the top border
+   wprintf (L"%s\n", topBorder);
    // Loop through rows and columns to print the chessboard
    for (int row = 0; row < 8; row++) {
-      // Print each row's
       for (int col = 0; col < 8; col++) {
          wchar_t piece = GetPiece (row, col);
-         wprintf (L"┃ %lc ", piece);          // Print to console
-         fwprintf (fp, L"┃ %lc ", piece);     // Print to file
+         wprintf (L"┃ %lc ", piece);                            // Print to console
+         fwprintf (fp, L"┃ %lc ", piece);                       // Print to file
       }
       wprintf (L"┃ \n");
       fwprintf (fp, L"┃ \n");
-      // Print row separators
       if (row != 7) {
-         wprintf (L"┣━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━┫\n");
-         fwprintf (fp, L"┣━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━┫\n");
+         fwprintf (fp, L"%s\n", rowSeparator);                  // Print row separators
+         wprintf (L"%s\n", rowSeparator);
       }
    }
-   // Print the bottom border
-   wprintf (L"┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛\n");
-   fwprintf (fp, L"┗━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┻━━━┛\n");
+   fwprintf (fp, L"%s\n", bottomBorder);                       // Print the bottom border
+   wprintf (L"%s\n", bottomBorder);
 }

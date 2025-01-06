@@ -62,8 +62,8 @@ int main () {
    fwprintf (output, L"Running Test Chessboard...\n");
    PrintChessboard (output);
    fclose (output);
-   wprintf (L"\nDo you want to run a test case? (y/n): \n");
-   char choice = _getch ();
+   wprintf (L"\nDo you want to run a test case? (y/n): ");
+   char choice = _getche ();
    if (tolower (choice) == 'y') {
       // Open Chess.txt for reading
       err = fopen_s (&output, "Chess.txt", "r+,ccs=UTF-8");
@@ -79,7 +79,7 @@ int main () {
          return -1;
       }
       int result = FileCompare (ref, output);
-      (result == 0) ? wprintf (GREEN L"Files match! TEST PASSED\n" RESET) : wprintf (RED L"TEST FAILED\n" RESET);
+      (result == 0) ? wprintf (GREEN L"\nFiles match! TEST PASSED\n" RESET) : wprintf (RED L"\nTEST FAILED\n" RESET);
       fclose (output);
       fclose (ref);
    }
