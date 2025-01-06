@@ -22,35 +22,72 @@ static void ClearScreen () {
 #endif
 }
 
-static void Fibonacci (int n) {
-   int a = 0, b = 1, next;
-   printf ("%d %d ", a, b);
-   for (int i = 2; i < n; i++) {
-      next = a + b;
-      printf ("%d ", next);
-      a = b;
-      b = next;
-   }
-   printf ("\n");
+/// <summary>Function to generate Fibonacci series up to n terms.</summary>
+static void Fibonacci (int n, int a, int b, int* output) {
+   if (n == 0) return;
+   output[0] = a;
+   Fibonacci (n - 1, b, a + b, &output[1]);
 }
 
+/// <summary>Function to check if a number is prime.</summary>
 static int IsPrime (int n) {
-   if (n <= 1) return 0;
-   for (int i = 2; i * i <= n; i++) if (n % i == 0) return 0;
+   if (n == 2) return 1;
+   if (n <= 1 || n % 2 == 0) return 0;
+   for (int i = 3; i * i <= n; i += 2) if (n % i == 0) return 0;
    return 1;
+}
+
+/// <summary>Function to test Fibonacci series.</summary>
+static void TestFibonacci () {
+   int testCases[] = { 5, 10, 0, 1 };
+   int expectedOutput[][10] = { { 0, 1, 1, 2, 3},
+      { 0, 1, 1, 2, 3, 5, 8, 13, 21, 34 }, { 0 }, { 0, 1 }
+   };
+   printf (YELLOW "\nTest Case: Fibonacci Series\n" RESET);
+   for (int i = 0; i < 4; i++) {
+      int n = testCases[i];
+      int output[10] = { 0 };
+      Fibonacci (n, 0, 1, output);
+      printf ("\nFibonacci upto (%d) terms: ", n);
+      printf ("\nExpected: ");
+      for (int j = 0; j < n; j++) printf ("%d ", expectedOutput[i][j]);
+      printf ("\nOutput  : ");
+      for (int j = 0; j < n; j++) printf ("%d ", output[j]);
+      int pass = 1;
+      for (int j = 0; j < n; j++) {
+         if (output[j] != expectedOutput[i][j]) {
+            pass = 0;
+            break;
+         }
+      }
+      pass ? printf (GREEN "\nTEST PASS\n" RESET) : printf (RED "\nTEST FAILn" RESET);
+   }
+}
+
+/// <summary>Function to test prime number.</summary>
+static void TestIsPrime () {
+   int numbers[] = { 2, 3, 5, 17, 4, 15 };
+   int expectedResults[] = { 1, 1, 1, 1, 0, 0 };
+   int numTests = sizeof (numbers) / sizeof (numbers[0]);
+   printf (YELLOW "\nTest Case: Prime Check\n" RESET);
+   for (int i = 0; i < numTests; i++) {
+      int num = numbers[i];
+      int expected = expectedResults[i];
+      int result = IsPrime (num);
+      printf ("Is %d prime? ", num);
+      result == expected ? printf (GREEN "%d is a prime number. TEST PASS \n" RESET, num) : printf (RED "%d is not a prime number. TEST FAIL\n" RESET, num);
+   }
 }
 
 int main () {
    int n, choice;
    char buffer[100];
    char continueChoice;
+   TestFibonacci ();
+   TestIsPrime ();
    do {
-      printf ("\nChoose an option:\n");
-      printf ("1. Display Fibonacci series up to n terms\n");
-      printf ("2. Check if a number is prime\n");
-      printf ("Enter your choice (1 or 2): ");
-      fgets (buffer, sizeof (buffer), stdin);
-      choice = atoi (buffer);
+      printf ("\nChoose an option:\n1. Display Fibonacci series up to n terms\n2. Check if a number is prime\nEnter your choice (1 or 2): ");
+      choice = _getche () - '0';
       ClearScreen ();
       printf ("Enter the value of n: ");
       fgets (buffer, sizeof (buffer), stdin);
@@ -59,7 +96,10 @@ int main () {
       switch (choice) {
       case 1:
          printf (GREEN "Fibonacci series up to %d terms: " RESET, n);
-         Fibonacci (n);
+         int output[10] = { 0 };
+         Fibonacci (n, 0, 1, output);
+         for (int i = 0; i < n; i++) printf ("%d ", output[i]);
+         printf ("\n");
          break;
       case 2:
          IsPrime (n) ? printf (GREEN "%d is a prime number.\n" RESET, n) : printf (RED "%d is not a prime number.\n" RESET, n);
