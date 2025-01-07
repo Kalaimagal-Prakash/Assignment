@@ -16,6 +16,6 @@
 #define RESET   "\033[0m"
 
 /// <summary>Function to calculate the change to be returned and the number of coins of different denominations.</summary>
-int* CalculateChange (int cashPaid, int actualAmount);
+int* CalculateChange (int cashPaid, int actualAmount, int denominations[], int numDenominations);
 
 #endif CASH_H

@@ -8,11 +8,10 @@
 // ------------------------------------------------------------------------------------------------
 #include "Cash.h"
 
-int* CalculateChange (int cashPaid, int actualAmount) {
+int* CalculateChange (int cashPaid, int actualAmount, int denominations[], int numDenominations) {
    int change = cashPaid - actualAmount;
-   int denominations[] = { 10, 5, 2, 1 };
-   static int countCoin[4];
-   for (int i = 0; i < 4; i++) {
+   static int countCoin[10];                       // Assuming a maximum of 10 denominations
+   for (int i = 0; i < numDenominations; i++) {
       countCoin[i] = change / denominations[i];
       change = change % denominations[i];
    }
