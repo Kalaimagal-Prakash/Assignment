@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <time.h>
 
 // ANSI escape codes for colors
 #define GREEN   "\033[32m"
@@ -23,10 +24,15 @@ static void ClearScreen () {
 }
 
 /// <summary>Function to generate Fibonacci series up to n terms.</summary>
-static void Fibonacci (int n, int a, int b, int* output) {
+static void Fibonacci (int n, int a, int b, int output[]) {
    if (n == 0) return;
    output[0] = a;
-   Fibonacci (n - 1, b, a + b, &output[1]);
+   for (int i = 1; i < n; i++) {
+      output[i] = b;
+      int temp = a + b;
+      a = b;
+      b = temp;
+   }
 }
 
 /// <summary>Function to check if a number is prime.</summary>
@@ -60,22 +66,20 @@ static void TestFibonacci () {
             break;
          }
       }
-      pass ? printf (GREEN "\nTEST PASS\n" RESET) : printf (RED "\nTEST FAILn" RESET);
+      pass ? printf (GREEN "\nTEST PASS\n" RESET) : printf (RED "\nTEST FAIL" RESET);
    }
 }
 
 /// <summary>Function to test prime number.</summary>
 static void TestIsPrime () {
-   int numbers[] = { 2, 3, 5, 17, 4, 15 };
-   int expectedResults[] = { 1, 1, 1, 1, 0, 0 };
-   int numTests = sizeof (numbers) / sizeof (numbers[0]);
+   srand (time (0));
+   int numTests = 6;
    printf (YELLOW "\nTest Case: Prime Check\n" RESET);
    for (int i = 0; i < numTests; i++) {
-      int num = numbers[i];
-      int expected = expectedResults[i];
+      int num = rand () % 100 + 1;                                // Generate random numbers between 1 and 100
       int result = IsPrime (num);
       printf ("Is %d prime? ", num);
-      result == expected ? printf (GREEN "%d is a prime number. TEST PASS \n" RESET, num) : printf (RED "%d is not a prime number. TEST FAIL\n" RESET, num);
+      result == 1 ? printf (GREEN "%d is a prime number. TEST PASS \n" RESET, num) : printf (RED "%d is not a prime number. TEST FAIL\n" RESET, num);
    }
 }
 
