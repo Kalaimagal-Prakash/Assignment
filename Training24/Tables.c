@@ -21,6 +21,7 @@ static void ClearScreen () {
 #endif
 }
 
+/// <summary>Prints a diamond pattern of stars with height based on the input.</summary>
 static void PrintDiamond (int n) {
    for (int i = 1; i <= n; i++) {
       for (int j = i; j < n; j++) printf (" ");
@@ -34,6 +35,7 @@ static void PrintDiamond (int n) {
    }
 }
 
+/// <summary>Prints multiplication tables from 1 to 10.</summary>
 static int Tables () {
    for (int i = 1; i <= 10; i++) {
       printf ("Multiplication Table for %d:\n", i);
